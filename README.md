@@ -22,6 +22,10 @@
 
   ![](https://github.com/gangan786/Network_eNSP/raw/master/OSPF/Image/%E5%AE%9E%E9%AA%8C%E6%8B%93%E6%89%91%E5%9B%BE.png?raw=true)
 
++ VRRP（虚拟路由冗余协议）
+
+  ![](https://github.com/gangan786/Network_eNSP/blob/master/MSTP+VRRP/image/%E6%8B%93%E6%89%91%E5%9B%BE.png?raw=true)
+
 
 
 该实验基于华为网络模拟器（eNSP），每个实验可直接导入该模拟器中运行并且可自行修改
