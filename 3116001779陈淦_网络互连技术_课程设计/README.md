@@ -2,7 +2,7 @@
 
 网络拓扑图
 
-![](https://github.com/gangan786/Network_eNSP/blob/master/3116001779%E9%99%88%E6%B7%A6_%E7%BD%91%E7%BB%9C%E4%BA%92%E8%BF%9E%E6%8A%80%E6%9C%AF/image/%E6%8B%93%E6%89%91%E5%9B%BE.png?raw=true)
+![](https://github.com/gangan786/Network_eNSP/blob/master/3116001779%E9%99%88%E6%B7%A6_%E7%BD%91%E7%BB%9C%E4%BA%92%E8%BF%9E%E6%8A%80%E6%9C%AF_%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1/image/%E6%8B%93%E6%89%91%E5%9B%BE.png?raw=true)
 
 需求及所应用的技术
 
