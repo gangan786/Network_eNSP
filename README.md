@@ -28,4 +28,14 @@
 
 
 
+
+
++ 课程设计
+
+  详细的设计说明可查看具体文档
+
+  ![](https://github.com/gangan786/Network_eNSP/blob/master/3116001779%E9%99%88%E6%B7%A6_%E7%BD%91%E7%BB%9C%E4%BA%92%E8%BF%9E%E6%8A%80%E6%9C%AF/image/%E6%8B%93%E6%89%91%E5%9B%BE.png?raw=true)
+
+  
+
 该实验基于华为网络模拟器（eNSP），每个实验可直接导入该模拟器中运行并且可自行修改
