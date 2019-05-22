@@ -1,0 +1,3620 @@
+// Description: Valid check for JavaScript
+// Usage: <script type=text/javascript src=/check.js></script>
+// Function Listing:
+//  function chkdate(yearStr, monthStr, dayStr)
+//  function chkdatestr(checkStr)
+//  function chkemail(checkStr)
+//  function chkfloat(checkStr)
+//  function chkinteger(checkStr)
+//  function chklength(checkStr)
+//  function chkname(checkStr)
+//  function chknegative(checkStr)
+//  function chknostring(checkStr, forbidStr)
+//  function chknumber(checkStr)
+//  function chkpasswd(checkStr)
+//  function chkphone(checkStr)
+//  function chkquot(checkStr)
+//  function chksafe(checkStr)
+//  function chkspace(checkStr)
+//  function chkstring(checkStr, checkOK)
+//  function trim(w)
+//  function trimform(TheForm)
+
+
+
+
+function chongci_timu_jump(timu,url,paper_id,kemu_id,canuse_one_kemu){
+
+//	alert();
+	var web_url = url + "/chongci_timu_check_power.jsp?paper_id=" + paper_id + "&kemu_id=" + kemu_id + "&canuse_one_kemu=" + canuse_one_kemu + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+		
+//		alert(data);
+		if (data.indexOf("bunengyong") != -1)//有验证码
+		{
+			alert("如需要，请开通");
+		}else{
+			window.location = url + "/tk_timu/" + timu;
+		}
+	});		
+}
+
+
+
+function confirm_use(time,order_id,product_id){
+	if (confirm("您确定使用吗？"))
+	{
+		document.getElementById("time").value = time;
+		document.getElementById("order_id").value = order_id;
+		document.getElementById("product_id").value = product_id;
+		
+
+		form_mydocuments.submit();
+	}
+}
+
+
+function confirm_caozuo(){
+	if (confirm("您确定要变更吗？"))
+	{
+		form_bg.submit();
+	}
+}
+
+
+function confirm_caozuo2(){
+	if (confirm("您确定要延长吗？"))
+	{
+		form_yc.submit();
+	}
+}
+
+function confirm_caozuo3(){
+
+	if (document.getElementById("old_kemu").value == '请选择' || document.getElementById("new_kemu").value == '请选择')
+	{
+		alert("请选择");
+	}else{
+		if (confirm("您确定要变更吗？操作不可逆，请谨慎"))
+		{
+			form_bg.submit();
+		}	
+	}
+
+}
+
+function show_hidden(name){
+
+		if (document.getElementById(name).style.display == 'block')
+		{
+			document.getElementById(name).style.display = 'none';
+		}else{
+			document.getElementById(name).style.display = 'block';		
+		}
+		
+}
+function show_hidden2(name,id){
+
+		if (document.getElementById(name).style.display == 'block')
+		{
+			document.getElementById(name).style.display = 'none';
+		}else{
+			document.getElementById(name).style.display = 'block';
+			document.getElementById("bg_id").value = id;
+	//		alert(document.getElementById("bg_id").value);
+
+		}
+		
+}
+
+function put_value_to_hidden(n,v){
+
+	document.getElementById(n).value = v;
+
+}
+
+//组卷范围值的写入
+function step1_fw_value(kemu_id,url,n,v){	
+	//组卷范围
+	document.getElementById("fw").value = v;
+	//页面对应显示
+	step2_timu_show(kemu_id,url,v,'',0,0);
+}
+
+//题目顺序值的写入
+function step3_fw_value(v){	
+	//组卷范围
+	document.getElementById("tihao_shunxu").value = v;
+}
+
+//选项顺序值的写入
+function step4_fw_value(v){	
+	//组卷范围
+	document.getElementById("xuanxiang_shunxu").value = v;
+}
+
+
+//调出题目范围
+function step2_timu_show(kemu_id,url,step1_value,timu,cnt,time){
+	var web_url = url + "/tk_zice_xml_iframe.jsp?fw=" + step1_value + "&kemu_id=" + kemu_id + "&timu=" + timu + "&cnt=" + cnt + "&time=" + time + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+		document.getElementById("step2show").innerHTML = data;
+	});
+}
+
+//题目范围的写入
+function step2_timu_value(kemu_id,url,fw,timu,cnt,time){	
+	//题目范围
+	document.getElementById("timu").value = timu;
+	//题目数量
+	document.getElementById("cnt").value = cnt;
+	//做题时间
+	document.getElementById("time").value = time;
+	//页面对应显示
+	step2_timu_show(kemu_id,url,fw,timu,cnt,time);
+//	alert();
+	
+}
+
+
+//题目范围的写入
+function step2_timu_value_xml_5(kemu_id,url,fw,cnt,time){	
+	//题目范围
+//	document.getElementById("timu").value = timu;
+	//题目数量
+	document.getElementById("cnt").value = cnt;
+	//做题时间
+	document.getElementById("time").value = time;
+	//页面对应显示
+	step2_timu_show(kemu_id,url,fw,document.getElementById("timu").value,cnt,time);
+//	alert();
+	
+}
+
+//题目范围的写入 第一次初始化 （与上面函数的区别是 不再调显示页面了 要不然就死循环了）
+function step2_timu_value_chushihua(kemu_id,url,fw,timu,cnt,time){	
+	//题目范围
+	document.getElementById("timu").value = timu;
+	//试题数量
+	document.getElementById("cnt").value = cnt;
+	//做题时间
+	document.getElementById("time").value = time;
+
+}
+
+
+//题目范围的写入 第一次初始化 （与上面函数的区别是 不再调显示页面了 要不然就死循环了）
+function step2_timu_value_chushihua_xml_5(kemu_id,url,fw,cnt,time){	
+	//题目范围
+	document.getElementById("timu").value = '';
+	//试题数量
+	document.getElementById("cnt").value = cnt;
+	//做题时间
+	document.getElementById("time").value = time;
+
+}
+
+function show_datu(imgpath){
+
+//	alert(imgpath);
+
+//	document.getElementById("datu").innerHTML = "<img src=" + imgpath + " id=image_datu >";
+//	var w = document.getElementById("image_datu").width;
+//	var h = document.getElementById("image_datu").height;
+//	alert("图片\n宽:"+w+"\n高:"+h)
+
+
+    var img = document.createElement('img');//创建一个img元素
+    img.src = imgpath;//指定src
+//	alert(img.width);
+	var show_w = 0;
+	var show_h = 0;
+
+	if (img.width >= 478 && img.height >= 620)
+	{
+		if (img.width/478 >= img.height/620 )//倍数大，就证明边大
+		{
+			show_w = 478;
+			show_h = (478*img.height)/img.width;
+		}else{
+			show_h = 620;
+			show_w = (620*img.width)/img.height;		
+		}
+
+	}else if(img.width <= 478 && img.height <= 620){
+	
+		show_w = img.width;
+		show_h = img.height;	
+	}else if(img.width > 478 && img.height < 620){
+		show_w = 478;
+		show_h = (478*img.height)/img.width;		
+	}else if(img.width < 478 && img.height > 620){
+		show_h = 620;
+		show_w = (620*img.width)/img.height;
+	}
+
+//	alert("<img src=" + imgpath + " width= " + show_w + " height=" + show_h + ">");
+	document.getElementById("datu").innerHTML = "<img src=" + imgpath + " width= " + show_w + " height=" + show_h + ">";
+// height 470
+
+//    img.style.position="absolute";//防止正常的内容变形
+  //  img.style.visibility='hidden';//藏起来
+  //  var inj=document.getElementById('box').appendChild(img);//插入到box中。当然插入到document.body也可以
+  //  alert('宽：'+inj.offsetWidth);//然后就可以通过 offset 取得宽和高了
+  //  alert('高：'+inj.offsetHeight);
+
+}
+
+function show_datu_plan(imgpath,nn){
+
+//	alert(imgpath);
+
+//	document.getElementById("datu").innerHTML = "<img src=" + imgpath + " id=image_datu >";
+//	var w = document.getElementById("image_datu").width;
+//	var h = document.getElementById("image_datu").height;
+//	alert("图片\n宽:"+w+"\n高:"+h)
+
+
+    var img = document.createElement('img');//创建一个img元素
+    img.src = imgpath;//指定src
+//	alert(img.width);
+	var show_w = 0;
+	var show_h = 0;
+
+	if (img.width >= 478 && img.height >= 620)
+	{
+		if (img.width/478 >= img.height/620 )//倍数大，就证明边大
+		{
+			show_w = 478;
+			show_h = (478*img.height)/img.width;
+		}else{
+			show_h = 620;
+			show_w = (620*img.width)/img.height;		
+		}
+
+	}else if(img.width <= 478 && img.height <= 620){
+	
+		show_w = img.width;
+		show_h = img.height;	
+	}else if(img.width > 478 && img.height < 620){
+		show_w = 478;
+		show_h = (478*img.height)/img.width;		
+	}else if(img.width < 478 && img.height > 620){
+		show_h = 620;
+		show_w = (620*img.width)/img.height;
+	}
+
+	var tt = "datu_" + nn;
+
+//	alert("<img src=" + imgpath + " width= " + show_w + " height=" + show_h + ">");
+	document.getElementById(tt).innerHTML = "<img src=" + imgpath + " width= " + show_w + " height=" + show_h + ">";
+// height 470
+
+//    img.style.position="absolute";//防止正常的内容变形
+  //  img.style.visibility='hidden';//藏起来
+  //  var inj=document.getElementById('box').appendChild(img);//插入到box中。当然插入到document.body也可以
+  //  alert('宽：'+inj.offsetWidth);//然后就可以通过 offset 取得宽和高了
+  //  alert('高：'+inj.offsetHeight);
+
+}
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+//函数名：chkdate
+//功能介绍：检查是否为合法日期
+//参数说明：要检查的字符串年、月、日
+//返 回 值：false:不是  true:是
+function chkdate(yearStr, monthStr, dayStr) {
+  var checkOK = "1234567890";
+  if ( !chkstring(yearStr, checkOK) ||
+       !chkstring(monthStr, checkOK) ||
+       !chkstring(dayStr, checkOK) )
+    return(false);
+
+  testday = new Date();
+  testday.setFullYear(yearStr, monthStr-1, dayStr);
+  var tmpy = testday.getFullYear();
+  var tmpm = testday.getMonth() + 1;
+  var tmpd = testday.getDate();
+  if (tmpy == yearStr && tmpm == monthStr && tmpd == dayStr) {
+    return(true);
+  } else {
+    return(false);
+  }
+}
+
+
+//函数名：chkdateStr
+//功能介绍：检查是否为合法日期
+//参数说明：要检查的字符串YYYY-MM-DD
+//返 回 值：false:不是  true:是
+function chkdatestr(checkStr) {
+  var tmpy = "";
+  var tmpm = "";
+  var tmpd = "";
+  var checkCode = 0;
+  for (i=0; i<checkStr.length ;i++) {
+    ch = checkStr.charAt(i);
+    if (ch == '-') checkCode++;
+    if (checkCode > 2) return(false);
+    else if (checkCode == 0 && ch != '-') tmpy += ch;
+    else if (checkCode == 1 && ch != '-') tmpm += ch;
+    else if (checkCode == 2 && ch != '-') tmpd += ch;
+  }
+  if (chknumber(tmpy) && tmpy.length == 2) {
+    if (tmpy > 70) tmpy = "19" + tmpy;
+    else tmpy = "20" + tmpy;
+  }
+  return(chkdate(tmpy, tmpm, tmpd));
+}
+
+
+//函 数 名：chkemail
+//功能介绍：检查是否为合法的Email Address
+//参数说明：要检查的字符串
+//返 回 值：false:不是  true:是
+//校验规则：不能以.或@开头和/或结尾，不能包含1个以上@，形如*@(*.)*
+function chkemail(checkStr) {
+  var checkOK = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@._-";
+  var allValid = false;
+  var checkCode = 0;
+  for (i = 0; i < checkStr.length; i++) {
+    ch = checkStr.charAt(i);
+    if (ch == "@") {
+      if (checkCode == 0 && i > 0) {
+        checkCode = 1;
+      } else {
+        break;
+      }
+    }
+    if (ch == ".") {
+      if (i == 0 || i == checkStr.length - 1) {
+        break;
+      } else if (checkStr.charAt(i+1) == '.') {
+        break;
+      } else if (checkCode == 0) {
+        if (checkStr.charAt(i+1) == '@') {
+          break;
+        }
+      } else if (checkCode == 1) {
+        if (checkStr.charAt(i-1) == '@') {
+          break;
+        } else {
+          checkCode = 2;
+        }
+      }
+    }
+    chValid = false;
+    for (j = 0; j < checkOK.length; j++) {
+      if (ch == checkOK.charAt(j)) {
+        chValid = true;
+        break;
+      }
+    }
+    if (!chValid) break;
+    if (i == checkStr.length - 1 && checkCode == 2) {
+      allValid = true;
+      break;
+    }
+  }
+  return(allValid);
+}
+
+
+//函 数 名：chkfloat
+//功能介绍：检查是否为小数
+//参数说明：要检查的字符串
+//返 回 值：false:不是  true:是
+function chkfloat(checkStr) {
+  if (chknumber(checkStr) && checkStr.indexOf(".") >= 0) {
+    return(true);
+  } else {
+    return(false);
+  }
+}
+
+
+//函 数 名：chkinteger
+//功能介绍：检查是否为数字
+//参数说明：要检查的字符串
+//返 回 值：false:不是  true:是
+function chkinteger(checkStr) {
+  var checkOK = "0123456789+-";
+  var allValid = true;
+  for (i = 0; i < checkStr.length; i++) {
+    ch = checkStr.charAt(i);
+    if (checkOK.indexOf(ch) == -1) {
+      allValid = false;
+      break;
+    }
+    if ((ch == '+' || ch == '-') && i > 0) {
+      allValid = false;
+      break;
+    }
+  }
+  return(allValid);
+}
+
+
+//函 数 名：chklength
+//功能介绍：检查字符串的长度
+//参数说明：要检查的字符串
+//返 回 值：字节长度值
+function chklength(checkStr) {
+  var n = 0;
+  for(i=0; i<checkStr.length; i++) {
+    chcode = checkStr.charCodeAt(i);
+    if (chcode >=0  && chcode <= 255) {
+      n++;
+    } else {
+      n += 2;
+    }
+  }
+  return(n);
+}
+
+
+//函 数 名：chkname
+//功能介绍：检查是否符合名称要求
+//参数说明：要检查的字符串
+//返 回 值：false:不是  true:是
+function chkname(checkStr) {
+  var forbidStr = "0123456789`~!@#$%^&*()_-+=|\\{}[];:,<>?/\"";
+  return(!chknostring(checkStr, forbidStr));
+}
+
+
+//函 数 名：chknegative
+//功能介绍：检查是否为负数
+//参数说明：要检查的字符串
+//返 回 值：false:不是  true:是
+function chknegative(checkStr) {
+  if (chknumber(checkStr) && checkStr.charAt(0) == '-') {
+    return(true);
+  } else {
+    return(false);
+  }
+}
+
+
+//函 数 名：chknostring
+//功能介绍：检查是否含非法字符
+//参数说明：要检查的字符串，合法的字符串集合
+//返 回 值：false:不是  true:是
+function chknostring(checkStr, forbidStr) {
+  var allValid = false;
+  if (typeof(checkStr) != "string" || typeof(forbidStr) != "string") return(false);
+  for (i = 0; i < checkStr.length; i++) {
+    ch = checkStr.charAt(i);
+    if (forbidStr.indexOf(ch) >= 0) {
+      allValid = true;
+      break;
+    }
+  }
+  return(allValid);
+}
+
+
+//函 数 名：chknumber
+//功能介绍：检查是否为数字
+//参数说明：要检查的字符串
+//返 回 值：false:不是  true:是
+function chknumber(checkStr) {
+  var checkOK = "0123456789.+-";
+  var allValid = true;
+  var checkCode = 0;
+  for (i = 0; i < checkStr.length; i++) {
+    ch = checkStr.charAt(i);
+    if (checkOK.indexOf(ch) == -1) {
+      allValid = false;
+      break;
+    }
+    if ((ch == '+' || ch == '-') && i > 0) {
+      allValid = false;
+      break;
+    }
+    if (ch == '.') {
+      checkCode += 1;
+      if (checkCode > 1) {
+        allValid = false;
+        break;
+      }
+    }
+  }
+  return(allValid);
+}
+
+
+//函 数 名：chkpasswd
+//功能介绍：检查是否符合密码要求
+//参数说明：要检查的字符串
+//返 回 值：false:不是  true:是
+function chkpasswd(checkStr) {
+  var checkOK ="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-.";
+  return(chkstring(checkStr, checkOK));
+}
+
+
+//函 数 名：checkphone
+//功能介绍：检查是否为电话号码
+//参数说明：要检查的字符串
+//返 回 值：false:不是  true:是
+function chkphone(checkStr) {
+	alert();
+  var checkOK = "0123456789-()# ,;:";
+  return(chkstring(checkStr, checkOK));
+}
+
+
+
+
+
+
+
+function chkstring(checkStr, checkOK) {
+  var allValid = true;
+  if (typeof(checkStr) != "string" || typeof(checkOK) != "string") return(false);
+  for (i = 0; i < checkStr.length; i++) {
+    ch = checkStr.charAt(i);
+    if (checkOK.indexOf(ch) == -1) {
+      allValid = false;
+      break;
+    }
+  }
+  alert();
+  return(allValid);
+}
+
+
+function chksjh(checkStr,url){
+	if(checkStr != ''){
+		ok = chktel(checkStr);
+		if(ok == 1){//正确
+			document.getElementById("sjh").innerHTML = "&nbsp;&nbsp;<img src=" + url + "/image/duigou.gif  width=13 height=13 >";
+			document.getElementById("tel_up").value = 1;	
+		}else{//错误
+			document.getElementById("sjh").innerHTML = "&nbsp;&nbsp;<span class=red-text>手机号码格式不对！</span>";
+			document.getElementById("tel_up").value = 0;	
+		}	
+	}
+}
+
+
+function chktel(checkStr){
+  var checkOK = "0123456789+()-";
+  var ok = 1;
+
+  if (typeof(checkStr) != "string" || typeof(checkOK) != "string") {
+	ok = 0;  
+  };
+  for (i = 0; i < checkStr.length; i++) {
+    ch = checkStr.charAt(i);
+    if (checkOK.indexOf(ch) == -1) {
+      ok = 0;
+    }
+  }
+
+  m = checkStr.length;
+  if(m < 11){
+	ok = 0;
+  }
+
+  return(ok);
+}
+
+
+
+
+
+
+
+//函 数 名：chkquot
+//功能介绍：检查是否含有引号（单引号和/或双引号）
+//参数说明：要检查的字符串
+//返 回 值：false:不是  true:是
+function chkquot(checkStr) {
+  var allValid = false;
+  for (i = 0; i < checkStr.length; i++) {
+    ch = checkStr.charAt(i);
+    if (ch == "'" || ch == '"') {
+      allValid = true;
+      break;
+    }
+  }
+  return(allValid);
+}
+
+
+//函 数 名：chksafe
+//功能介绍：检查是否含有&;`'\"|*?~<>^()[]{}$\n\r
+//参数说明：要检查的字符串
+//返 回 值：false:不是  true:是
+function chksafe(checkStr) {
+  var allValid = true;
+  var forbidStr = new Array ("&", ";", "`", "'", "\"", "|", "*", "?", "~", "<", ">", "^", "(", ")", "[", "]", "{", "}", "$", "\n", "\r");
+  m = forbidStr.length;
+  n = checkStr.length;
+  for (i=0; i<m; i++) {
+    for (j=0; j<n; j++) {
+      ch1 = checkStr.charAt(j);
+      ch2 = forbidStr[i];
+      if (ch1 == ch2) {
+        allValid = false;
+        break;
+      }
+    }
+  }
+  return(allValid);
+}
+
+
+//函 数 名：chkspace
+//功能介绍：检查是否含有空格
+//参数说明：要检查的字符串
+//返 回 值：false:不是  true:是
+function chkspace(checkStr) {
+  var allValid = false;
+  for (i = 0; i < checkStr.length; i++) {
+    ch = checkStr.charAt(i);
+    if (ch == " " || ch == "　") {
+      allValid = true;
+      break;
+    }
+  }
+  return(allValid);
+}
+
+
+//函 数 名：chkstring
+//功能介绍：检查是否全部合法
+//参数说明：要检查的字符串，合法的字符串集合
+//返 回 值：false:不是  true:是
+
+
+//函 数 名：trim
+//功能介绍：删除两端的空格符号（全角和／或半角）
+//参数说明：要处理的字符串
+//返 回 值：处理后的字符串
+function trim(w) {
+  while (w.length>0 && (w.substr(0,1)==' ' || w.substr(0,1)=='　')) w=w.substr(1);
+  while (w.length>0 && (w.substr(w.length-1)==' ' || w.substr(w.length-1)=='　')) w=w.substr(0,w.length-1);
+  return(w);
+}
+
+
+//函 数 名：trimform
+//功能介绍：对表单内所有text类型做trim操作
+//参数说明：要处理的表单名
+//返 回 值：false:失败  true:成功
+function trimform(TheForm) {
+  if (typeof(TheForm) != "object") return(false);
+  for (var i=0; i<TheForm.elements.length; i++) {
+    var e = TheForm.elements[i];
+    if (e.type == 'text') {
+      e.value = trim(e.value);
+    }
+  }
+  return(true);
+}
+
+
+
+function checksearch(){
+//	alert(document.getElementById('keywords00').value);
+//getElementById 先找name 是一样的 奶奶的
+	if (document.getElementById("keywords00").value == "")
+	{
+		alert("请填写关键词");
+		
+		return(false);
+	}else{
+
+		if (document.getElementById("keywords00").value.length > 100)
+		{
+			alert("关键词不要多于100个字，请精简");
+			return(false);
+		}else{
+			return(true);
+		
+		}
+
+	}
+}
+
+/*
+function showlogincart(){
+	$.get("cartlogin.jsp", {cache:false},function (data, textStatus){
+//		cwxbox.box.show(data);
+	});
+}
+*/
+
+
+
+
+
+function showiftel(nn){
+
+		if (nn == "需要")
+		{			
+			document.getElementById("tel_area").style.display = 'block';
+		}else if(nn == "不需要"){
+			document.getElementById("tel_area").style.display = 'none';
+		}
+
+}
+
+
+function ZiceForTiKu(kemu_id){
+	window.location="tk_zice.jsp?kemu_id=" + kemu_id + "";
+}
+
+
+function ZhishidianForTiKu(kemu_id){
+	window.location="tk_zhishidian.jsp?paper_id=0&kemu_id=" + kemu_id + "";
+}
+
+function ZhishidianForTiKuForPaper(paper_id,kemu_id){
+	window.location="tk_zhishidian.jsp?paper_id=" + paper_id + "&kemu_id=" + kemu_id + "";
+}
+
+function PageKemuForTiKu(kemu_id,year,px_type){
+	
+	window.location="tk_index.jsp?year=" + year + "&px_type=" + px_type + "&kemu_id=" + kemu_id + "";
+
+
+}
+
+
+function PageKemuForTiKuChongci(kemu_id,year,px_type){
+	
+	window.location="tk_chongci.jsp?year=" + year + "&px_type=" + px_type + "&kemu_id=" + kemu_id + "";
+
+
+}
+
+function FenleiListForKemu(select_kemu_id,level_code,have_son,paper_id,select_option_id){
+	
+
+	window.location="tk_fenlei_list.jsp?select_kemu_id=" + select_kemu_id + "&level_code=" + level_code + "&have_son=" + have_son + "&srch=1&paper_id=" + paper_id + "&select_option_id=" + select_option_id + "";
+
+
+
+}
+
+
+
+function PageKemuForMyTiKu(kemu_id){
+	window.location="mytiku.jsp?kemu_id=" + kemu_id + "";
+}
+
+
+function PageKemuForMyTiKuFree(kemu_id){
+	window.location="mytiku_free.jsp?kemu_id=" + kemu_id + "";
+}
+
+function PageKemuForMyTiKuMoney(kemu_id,page_type){
+	window.location="mytikuandclub_mon.jsp?kemu_id=" + kemu_id + "&page_type=" + page_type + "";
+}
+
+
+
+
+
+function GoTkZujiHtml(kemu_id){
+	window.location="tk_paper_timu_for_" + kemu_id + ".html";
+}
+
+
+
+function GoTkKnowledgeService(kemu_id){
+	window.location="tk_knowledge_service_list.jsp?kemu_id=" + kemu_id + "";
+}
+
+
+function ZuoCuoLvForTiKu(select_kemu_id){	
+	form1.submit();
+
+//	window.location="tk_zuocuolv_list.jsp?select_kemu_id=" + select_kemu_id + "&srch=1";
+}
+
+
+function PageKemuForSearch(product_group,kemu_id,lanmu,px_type,keywords,fanwei,tixing,answer){
+//	alert(fanwei);
+	//变换类型不用跟着lanmu参数 因为已经变到其他内容范畴里面去了
+	window.location="search.jsp?&px_type=" + px_type + "&keywords=" + keywords + "&product_group=" + product_group + "&kemu_id=" + kemu_id + "&fanwei=" + fanwei + "&tixing=" + tixing + "&answer=" + answer + "&lanmu=" + lanmu + "";	
+
+//	alert(kemu_id);
+
+}
+
+function PageKemuForNews(kemu_id,group_id){
+	
+	window.location="news_list.jsp?group_id=" + group_id + "&kemu_id=" + kemu_id + "";	
+
+//	alert(kemu_id);
+
+}
+
+//单选
+function showbiankuang(isshow,ishidden){
+//	alert(isshow);
+//	alert(ishidden);
+
+	document.getElementById(isshow).className = "plan_xx_biankuang_selected";					
+//	alert();
+	var aList = ishidden.split("_");
+	for (i = 0;i < aList.length ;i ++ )
+	{
+		if(aList[i] != "")
+		{	
+			if (aList[i] != isshow)
+			{
+				document.getElementById(aList[i]).className = "plan_xx_biankuang";					
+			}			
+		}
+	}
+}
+
+
+//复选
+//显示边框 同时赋值
+function showbiankuang_fuxuan_zice_xml_5(name,v,kemu_id,url,fw){
+//	alert(document.getElementById(name).className);
+	var vv = "_" + v + "_";
+	if (document.getElementById(name).className == "zice_xx_biankuang")//已经是未选中
+	{
+		//现在是选中
+		document.getElementById(name).className = "plan_xx_biankuang_selected";
+		parent.document.getElementById("timu").value += vv;
+
+	}else if(document.getElementById(name).className == "plan_xx_biankuang_selected"){//已经是选中
+		//现在是未选中
+		document.getElementById(name).className = "zice_xx_biankuang";	
+		parent.document.getElementById("timu").value = parent.document.getElementById("timu").value.replace(vv,"");
+
+	}
+
+}
+
+
+
+
+
+
+//复选
+function showbiankuang_fuxuan(isshow){
+//	alert(isshow);
+	var show = "qbk" + isshow;
+	var f = document.forms["form_plan_step2"]; 
+//	alert('1');
+	for (i=0;i<f.elements.length;i++){
+		if (f.elements[i].name=="q2_answer" && f.elements[i].checked == true  && f.elements[i].value == isshow)
+		{
+		//	alert('3');
+			document.getElementById(show).className = "plan_xx_biankuang_selected";					
+		}
+		if (f.elements[i].name=="q2_answer" && f.elements[i].checked == false  && f.elements[i].value == isshow)
+		{
+		//	alert('3');
+			document.getElementById(show).className = "plan_xx_biankuang";					
+		}
+
+		
+	}
+//	alert();
+
+}
+
+
+
+function show_fenlei_list_line_user_data(line_list,url){
+
+	var web_url = "tk_fenlei_list_line_user_data.jsp?line_list=" + line_list + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+
+		var aList = data.split("|");
+		for (i = 0;i < aList.length ;i ++ )
+		{
+			if(aList[i] != "")
+			{	
+				if (aList[i].indexOf("9999999_") == -1)//去头去尾
+				{
+				//	alert(aList[i]);
+
+					//开始渲染每一个格
+					var bList = aList[i].split("_");
+					var name_done = "done_" + bList[0];
+					if (bList[2] == "null")
+					{
+						bList[2] = "";
+					}
+					if (bList[2] == "")
+					{
+						document.getElementById(name_done).innerHTML = "";
+					}else{
+						if (bList[2] > 0)
+						{
+							document.getElementById(name_done).innerHTML = "<img src=image/dui.gif class=juzhong width=19  height=22 >";
+						}
+					}
+
+					var name_no_right = "no_right_" + bList[0];
+					if (bList[3] == "null")
+					{
+						bList[3] = "";
+					}
+					if (bList[3] == "")
+					{
+						document.getElementById(name_no_right).innerHTML = "";					
+					}else{
+						if (bList[3] == 0)
+						{
+							document.getElementById(name_no_right).innerHTML = "<img src=image/deng.jpg class=juzhong width=23  height=28 >";					
+						}
+					}
+
+					
+
+
+
+				}
+
+			}
+		}
+
+
+	
+	});
+//	alert();
+}
+
+
+
+
+
+
+function show_line_user_data_chongci(line_list,url){
+//	alert(line_list);
+	var web_url = "tk_index_line_user_data_chongci.jsp?line_list=" + line_list + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+
+		var aList = data.split("|");
+		for (i = 0;i < aList.length ;i ++ )
+		{
+			if(aList[i] != "")
+			{	
+				if (aList[i].indexOf("9999999_") == -1)//去头去尾
+				{
+				//	alert(aList[i]);
+
+					//开始渲染每一个格
+					var bList = aList[i].split("_");
+					var name_done = "done_cnt_" + bList[0];
+					if (bList[2] == "null")
+					{
+						bList[2] = "";
+					}
+					if (bList[2] == "" || bList[2] == 0)
+					{
+						document.getElementById(name_done).innerHTML = "";
+					}else{
+						document.getElementById(name_done).innerHTML = "" + bList[2] + "道";
+					}
+
+					var name_wrong = "wrong_cnt_" + bList[0];
+					if (bList[3] == "null" || bList[3] == 0)
+					{
+						bList[3] = "";
+					}else{
+						bList[3] = "<img src=image/cuo2.gif class=juzhong width=16  height=16 >" + bList[3];					
+					
+					}
+					if (bList[3] == "" || bList[3] == 0)
+					{
+						document.getElementById(name_wrong).innerHTML = "";					
+					}else{
+						document.getElementById(name_wrong).innerHTML = "<span class=red_num>" + bList[3] + "道</span>";					
+					}
+
+					var name_biaoji = "biaoji_cnt_" + bList[0];
+					if (bList[4] == "null"  || bList[4] == 0)
+					{
+						bList[4] = "";
+					}else{
+						bList[4] = "<img src=image/hongqi.gif class=juzhong width=16  height=16 >" + bList[4];					
+					}
+					if (bList[4] == "" || bList[4] == 0)
+					{
+						document.getElementById(name_biaoji).innerHTML = "";
+
+					}else{
+						document.getElementById(name_biaoji).innerHTML = "<span class=bj_num>" + bList[4] + "道</span>";
+					
+					}
+
+
+
+
+
+				}
+
+			}
+		}
+
+
+	
+	});
+//	alert();
+}
+
+
+function show_line_user_data(line_list,url){
+
+	var web_url = "tk_index_line_user_data.jsp?line_list=" + line_list + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+
+		var aList = data.split("|");
+		for (i = 0;i < aList.length ;i ++ )
+		{
+			if(aList[i] != "")
+			{	
+				if (aList[i].indexOf("9999999_") == -1)//去头去尾
+				{
+				//	alert(aList[i]);
+
+					//开始渲染每一个格
+					var bList = aList[i].split("_");
+					var name_done = "done_cnt_" + bList[0];
+					if (bList[2] == "null")
+					{
+						bList[2] = "";
+					}
+					if (bList[2] == "" || bList[2] == 0)
+					{
+						document.getElementById(name_done).innerHTML = "";
+					}else{
+						document.getElementById(name_done).innerHTML = "" + bList[2] + "道";
+					}
+
+					var name_wrong = "wrong_cnt_" + bList[0];
+					if (bList[3] == "null" || bList[3] == 0)
+					{
+						bList[3] = "";
+					}else{
+						bList[3] = "<img src=image/cuo2.gif class=juzhong width=16  height=16 >" + bList[3];					
+					
+					}
+					if (bList[3] == "" || bList[3] == 0)
+					{
+						document.getElementById(name_wrong).innerHTML = "";					
+					}else{
+						document.getElementById(name_wrong).innerHTML = "<span class=red_num>" + bList[3] + "道</span>";					
+					}
+
+					var name_biaoji = "biaoji_cnt_" + bList[0];
+					if (bList[4] == "null"  || bList[4] == 0)
+					{
+						bList[4] = "";
+					}else{
+						bList[4] = "<img src=image/hongqi.gif class=juzhong width=16  height=16 >" + bList[4];					
+					}
+					if (bList[4] == "" || bList[4] == 0)
+					{
+						document.getElementById(name_biaoji).innerHTML = "";
+
+					}else{
+						document.getElementById(name_biaoji).innerHTML = "<span class=bj_num>" + bList[4] + "道</span>";
+					
+					}
+
+
+
+
+
+				}
+
+			}
+		}
+
+
+	
+	});
+//	alert();
+}
+
+
+function show_analysis_user_answer(product_id,type,url,zuocuolv,zuocuolv_date,user_gongxian){
+
+	var web_url =  url + "/tk_analysis_user_answer.jsp?product_id=" + product_id + "&type=" + type + "&zuocuolv=" + zuocuolv + "&zuocuolv_date=" + zuocuolv_date + "&user_gongxian=" + user_gongxian + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+		document.getElementById("analysis_user_answer_area").innerHTML = data;
+	});
+
+}
+
+
+function show_kexuan(plan_id,kemu_id,re,zhekou){
+	var uu = document.getElementById("kexuan_selected").value;
+	var show_daixuan = document.getElementById("show_daixuan").value;
+	var task_id = document.getElementById("task_id").value;
+
+	var web_url = "plan_step5_kexuan_xml.jsp?plan_id=" + plan_id + "&kemu_id=" + kemu_id + "&selected_product_id=" + uu + "&re=" + re + "&show_daixuan=" + show_daixuan + "&zhekou=" + zhekou + "&task_id=" + task_id + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+		document.getElementById("kexuan_area").innerHTML = data;
+		if (re == 1)
+		{
+			document.getElementById("addcar_area").style.display = 'none';
+			document.getElementById("rebuild_area").style.display = 'block';
+		}
+	});
+//	alert();
+}
+
+function ref_kexuan(nn,product_id,plan_id,kemu_id,zhekou,product_cn){
+	//nn=1的时候，是选中的，传过来的意思是取消选中
+	//nn=2的时候，是没选中的，传过来的意思是选中
+	var pp = product_id + ",";
+	var kexuan_selected = document.getElementById("kexuan_selected").value;
+//	alert(kexuan_selected);
+	
+	var kk = product_cn + ",";
+	var kexuan_selected_cn = document.getElementById("kexuan_selected_cn").value;
+//	alert(kexuan_selected_cn);
+
+	if (nn == 1)
+	{
+		kexuan_selected = kexuan_selected.replace(pp,"");
+		kexuan_selected_cn = kexuan_selected_cn.replace(kk,"");
+	}else if(nn == 2){
+		kexuan_selected += pp;
+		kexuan_selected_cn += kk;
+	}
+	document.getElementById("kexuan_selected").value = kexuan_selected;
+	document.getElementById("kexuan_selected_cn").value = kexuan_selected_cn;
+
+	show_kexuan(plan_id,kemu_id,1,zhekou);
+}
+
+
+
+function ref_kexuan_daixuan(plan_id,kemu_id,zhekou){
+	document.getElementById("show_daixuan").value = 1;
+	show_kexuan(plan_id,kemu_id,0,zhekou);
+}
+
+
+
+
+function shou_datizhi(sheet_list){
+//	alert(sheet_list);
+	var web_url = "tk_zice_answer_sheet_xml.jsp?sheet_list=" + sheet_list + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+		document.getElementById("datizhi").innerHTML = data;
+//		alert();
+	});
+
+//	alert();
+}
+
+function shou_datizhi_result(sheet_list){
+//	alert(sheet_list);
+	var web_url = "tk_zice_answer_sheet_result_xml.jsp?sheet_list=" + sheet_list + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+		document.getElementById("datizhi").innerHTML = data;
+//		alert();
+	});
+
+//	alert();
+}
+
+
+
+
+function show_zengzhi(){
+	var zengzhi_tel = document.getElementById("zengzhi_tel").value;
+	var web_url = "plan_step5_zengzhi_xml.jsp?zengzhi_tel=" + zengzhi_tel + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+
+		document.getElementById("zengzhi_area").innerHTML = data;
+
+	});
+//	alert();
+}
+
+
+function ref_zengzhi_duanxin(nn){
+	//nn=1的时候，是选中的，传过来的意思是取消选中
+	//nn=2的时候，是没选中的，传过来的意思是选中
+	
+	if (nn == 1)
+	{
+		document.getElementById("zengzhi_tel").value = 0;
+	}else if(nn == 2){
+		document.getElementById("zengzhi_tel").value = 1;
+	}
+
+	show_zengzhi();
+
+}
+
+function addcart(product_id,type,num,url,kemu_id){
+
+	var web_url = url + "/addcart.jsp?product_id=" + product_id + "&type=" + type + "&num=" + num + "&product_kemu_id=" + kemu_id + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+		cwxbox.box.show(data,3);
+		showcartcnt_caidan(url);
+		showcartlist_caidan(url);
+	});
+
+}
+
+
+function delProductOfCart(url,product_id,type,kemu_id){
+	var web_url = url + "/delproductcart.jsp?product_id=" + product_id + "&type=" + type + "&product_kemu_id=" + kemu_id + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+		showcartcnt_caidan(url);
+		showcartlist_caidan(url);
+	//	alert();
+	});
+}
+
+function delProductOfCartTS(url,product_id,type,kemu_id){
+	if (confirm("您确定要删除吗？"))
+	{
+		var web_url = url + "/delproductcart.jsp?product_id=" + product_id + "&type=" + type + "&product_kemu_id=" + kemu_id + ""; 
+		$.get(web_url, {cache:false},function (data, textStatus){
+	//		showcartcnt_caidan(url);
+	//		showcartlist_caidan(url);
+		//	alert();
+			document.getElementById("jiajiagou_list").value = "";
+
+
+
+			var f = document.forms["formcart"]; 
+			f.action = "cart.jsp";
+			f.submit();
+
+
+
+
+
+
+
+
+	
+		});
+	}
+}
+
+
+function changeProductNumOfCartTS(url,product_id,type,kemu_id,num){
+//		alert(num);
+		var web_url = url + "/changeproductnumcart.jsp?product_id=" + product_id + "&type=" + type + "&product_kemu_id=" + kemu_id + "&num=" + num + ""; 
+		$.get(web_url, {cache:false},function (data, textStatus){
+
+			window.location.reload();
+	
+		});
+
+}
+
+
+
+function delmywrong(product_id,tihao,paper_id,tixing,kemu_id,url){
+	if (confirm("您确定要把此题移出我的错题库吗？"))
+	{
+		var name = kemu_id+ "_" + paper_id + "_" + tihao + "_" + tixing + ".html";	
+		window.location = url + "/dealwithcenter.jsp?action=delmywrong&product_id=" + product_id + "&tihao=" + tihao + "&paper_id=" + paper_id + "&tixing=" + tixing + "&kemu_id=" + kemu_id + "&name=" + name + "";		
+	} 
+}
+
+
+
+
+function delmywrong_chongci(product_id,tihao,paper_id,tixing,kemu_id,url,shunxu_all,chongci_paper_id){
+	if (confirm("您确定要把此题移出我的错题库吗？"))
+	{
+		var name = kemu_id+ "_" + paper_id + "_" + tihao + "_" + tixing + "_" + chongci_paper_id + "_" + shunxu_all + ".html";	
+		window.location = url + "/dealwithcenter.jsp?action=delmywrong&product_id=" + product_id + "&tihao=" + tihao + "&paper_id=" + paper_id + "&tixing=" + tixing + "&kemu_id=" + kemu_id + "&name=" + name + "";		
+	} 
+}
+
+
+
+
+
+
+
+function delmywrong_piliang(){
+	if (confirm("您确定要把这些题目移出我的错题库吗？"))
+	{
+		form_list.submit();
+	} 
+}
+
+function delzicepaper_piliang(){
+	if (confirm("您确定要把这些自测试卷删除吗？"))
+	{
+		form_list.submit();
+	} 
+}
+
+
+function delAllProductOfCartTS(url){
+	if (confirm("您确定要删除吗？"))
+	{
+		var web_url = url + "/delallproductcart.jsp"; 
+		$.get(web_url, {cache:false},function (data, textStatus){
+	//		showcartcnt_caidan(url);
+	//		showcartlist_caidan(url);
+		//	alert();
+			document.getElementById("jiajiagou_list").value = "";
+
+
+
+			var f = document.forms["formcart"]; 
+			f.action = "cart.jsp";
+			f.submit();
+
+	
+		});
+	}
+}
+
+function addshoucang(product_id,url,kemu_id){
+
+	var web_url = url + "/addshoucang.jsp?product_id=" + product_id + "&product_kemu_id=" + kemu_id + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+		cwxbox.box.show(data,2);
+	});
+
+}
+
+
+function show_kemu_img(url){
+//	alert();
+	var web_url = url + "/kemu_img.jsp"; 
+	var divname = "area_kemu_img";
+//	alert(divname);
+	$.get(web_url, {cache:false},function (data, textStatus){
+//		alert("p");
+//		alert(divname);
+		document.getElementById(divname).innerHTML = data;
+//		alert("l");
+
+	});
+
+
+
+}
+
+
+
+
+function user_houxv(url,sheet_question,sheet_list,product_id,answer_time,zice_paper_id){
+//	alert(sheet_question);  //20130321232123|0|0|7  product_id|是否做过|是否标记|题号
+//	alert(sheet_list); //20130321232123|0|0|7_//20130321232120|0|0|8_//20130321232123|0|0|9
+//	alert(product_id);
+//	alert(answer_time);
+
+
+
+
+	var f = document.forms["form_zice_paper"]; 
+	for (i=0;i<f.elements.length;i++){
+		if (f.elements[i].name == "houxv"){
+			if (f.elements[i].value == product_id)
+			{
+				//对这一个复选框开始处理
+				var answer_time_str = answer_time.split(" ");
+				var shi = parseInt(answer_time_str[0]);
+				var fen = parseInt(answer_time_str[1]);
+				var miao = parseInt(answer_time_str[2]);
+				var answer_time_haomiao = parseInt(answer_time_str[0]) * 3600 + parseInt(answer_time_str[1]) * 60 + parseInt(answer_time_str[2]);
+
+				var sheet_question_str = sheet_question.split("|");
+				var new_sheet_question_str = "";//
+				var houxv_true = 0;
+				if (f.elements[i].checked == true)
+				{
+				//	alert("ok");
+					houxv_true = 1;
+					new_sheet_question_str = sheet_question_str[0] + "|" + sheet_question_str[1] + "|1|" + sheet_question_str[3];//打标识
+				}else{
+					houxv_true = 0;
+					new_sheet_question_str = sheet_question_str[0] + "|" + sheet_question_str[1] + "|0|" + sheet_question_str[3];//取消标识
+				}
+
+				//更新到数据库
+				var web_url = url + "/tk_zice_answer_updata_houxv_xml.jsp?zice_paper_id=" + zice_paper_id + "&product_id=" + sheet_question_str[0] + "&houxv=" + houxv_true + "&answer_time=" + answer_time_haomiao + ""; 
+			//	alert();
+				$.get(web_url, {cache:false},function (data, textStatus){
+					//更新页面
+					var new_sheet_list = sheet_list.replace(sheet_question,new_sheet_question_str);
+					document.getElementById("sheet_list").value = new_sheet_list;
+					var new_sheet_question_product_id = "sheet_question_" + sheet_question_str[0];
+					document.getElementById(new_sheet_question_product_id).value = new_sheet_question_str;
+
+					//更新答题卡
+					shou_datizhi(new_sheet_list);
+
+				
+				});
+
+
+			}
+		}		
+	}
+
+
+}
+
+
+
+
+function user_selected(url,sheet_question,sheet_list,user_answer,answer_time,zice_paper_id){
+//	alert(sheet_question);  //20130321232123|0|0|7  product_id|是否做过|是否标记|题号
+//	alert(sheet_list); //20130321232123|0|0|7_//20130321232120|0|0|8_//20130321232123|0|0|9
+//	alert(user_answer);
+//	alert(answer_time);
+
+	var sheet_question_str = sheet_question.split("|");
+	var new_sheet_question_str = sheet_question_str[0] + "|1|" + sheet_question_str[2] + "|" + sheet_question_str[3];//标识做过了
+//	alert(sheet_question_str[0]);
+	var answer_time_str = answer_time.split(" ");
+	var shi = parseInt(answer_time_str[0]);
+	var fen = parseInt(answer_time_str[1]);
+	var miao = parseInt(answer_time_str[2]);
+	var answer_time_haomiao = parseInt(answer_time_str[0]) * 3600 + parseInt(answer_time_str[1]) * 60 + parseInt(answer_time_str[2]);
+
+//	alert(shi + "_" + fen + "_" + miao + "_" + answer_time_haomiao);
+
+
+
+
+	//更新到数据库
+	var web_url = url + "/tk_zice_answer_updata_xml.jsp?zice_paper_id=" + zice_paper_id + "&product_id=" + sheet_question_str[0] + "&user_answer=" + user_answer + "&answer_time=" + answer_time_haomiao + ""; 
+//	alert();
+	$.get(web_url, {cache:false},function (data, textStatus){
+		//更新页面
+	//	alert();
+		var new_sheet_list = sheet_list.replace(sheet_question,new_sheet_question_str);
+		document.getElementById("sheet_list").value = new_sheet_list;
+		var new_sheet_question_product_id = "sheet_question_" + sheet_question_str[0];
+		document.getElementById(new_sheet_question_product_id).value = new_sheet_question_str;
+
+		//更新答题卡
+		shou_datizhi(new_sheet_list);
+
+	
+	});
+	
+	
+	
+
+}
+
+
+
+
+
+
+
+function show_userdotimu(kemu_id,url){
+	
+//	alert(url);
+	var web_url = url + "/user_do_timu.jsp?kemu_id=" + kemu_id; 
+	var divname = "area_user_do_timu_" + kemu_id;
+//	alert(divname);
+	$.get(web_url, {cache:false},function (data, textStatus){
+//		alert("p");
+//		alert(divname);
+		document.getElementById(divname).innerHTML = data;
+//		alert("l");
+
+	});
+
+
+
+}
+
+
+function show_userdotimu_kemu(kemu_id,url){
+	
+	var web_url = url + "/user_do_timu.jsp?kemu_id=" + kemu_id; 
+	var divname_1 = "area_user_do_timu_part_1";
+	$.get(web_url, {cache:false},function (data, textStatus){
+		document.getElementById(divname_1).innerHTML = data;
+	});
+
+
+	var divname_2 = "area_user_do_timu_part_2";
+	$.get(web_url, {cache:false},function (data, textStatus){
+		document.getElementById(divname_2).innerHTML = data;
+	});
+}
+
+
+
+
+
+function show_sds(kemu_id,url){
+	
+	var web_url = url + "/shouye_sds.jsp?kemu_id=" + kemu_id; 
+	var divname = "area_sds_" + kemu_id;
+//	alert(divname);
+	$.get(web_url, {cache:false},function (data, textStatus){
+//		alert("p");
+//		alert(divname);
+		document.getElementById(divname).innerHTML = data;
+//		alert("l");
+
+	});
+
+
+
+}
+
+
+
+
+
+
+
+function showcartcnt_caidan(url){
+//	alert();
+	var web_url = url + "/showcartcnt_caidan.jsp"; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+		document.getElementById("caidancarnum").innerHTML = data;
+	});
+}
+
+
+
+function showcartlist_caidan(url){
+	var web_url = url + "/showcartlist_caidan.jsp"; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+		document.getElementById("caidancarlist").innerHTML = data;
+	});
+}
+
+
+
+function chkActivationCode(){
+	if (document.getElementById("activation_code").value == "")
+	{
+		alert("请填写激活码");		
+		return(false);
+	}else{
+		return(true);	
+	}
+}
+
+
+
+
+
+function chkLoginInfo(url){
+//	alert("fd");
+	if ((document.getElementById("username_1").value == "" && document.getElementById("password").value == "") || document.getElementById("username_1").value == "")
+	{
+		document.getElementById("message").innerHTML = "<img src=" + url + "/image/close2.gif  width=15 height=15 class=juzhong>&nbsp;&nbsp;<span class=red-text>请填写用户名！</span>";		
+		return(false);
+	}else if(document.getElementById("password").value == ""){
+		document.getElementById("message").innerHTML = "<img src=" + url + "/image/close2.gif  width=15 height=15 class=juzhong>&nbsp;&nbsp;<span class=red-text>请填写密码！</span>";		
+		return(false);
+	}else{
+	//	alert('hu');
+		return(true);	
+	}
+}
+
+
+
+
+
+function chkRegInfoForEnterprise(){
+	if (document.getElementById("username_up").value == 1 && document.getElementById("password_up").value == 1 && document.getElementById("password2_up").value == 1 &&  document.getElementById("study_kemu").value != '请选择')
+	{
+		
+		document.getElementById("bkkm").innerHTML = "";
+		return(true);
+	}else{
+		if (document.getElementById("username_up").value == 0)
+		{
+			document.getElementById("youjian").innerHTML = "&nbsp;&nbsp;<span class=red-text>邮箱有误！</span>";
+		}
+		if (document.getElementById("password_up").value == 0)
+		{
+			document.getElementById("mima").innerHTML = "&nbsp;&nbsp;<span class=red-text>密码有误！</span>";
+		}
+		if (document.getElementById("password2_up").value == 0)
+		{
+			document.getElementById("mima2").innerHTML = "&nbsp;&nbsp;<span class=red-text>密码有误！</span>";
+		}
+		if (document.getElementById("study_kemu").value == '请选择')
+		{
+			document.getElementById("bkkm").innerHTML = "&nbsp;&nbsp;<span class=red-text>请选择！</span>";
+		}
+
+		return(false);
+	}
+
+
+}
+
+
+
+
+
+
+
+function chkModPwdInfo(){
+//	alert(document.getElementById("study_kemu").value);
+	if (document.getElementById("oldpwd_up").value == 1 && document.getElementById("password_up").value == 1 && document.getElementById("password2_up").value == 1 )
+	{
+		
+	//	document.getElementById("bkkm").innerHTML = "";
+		return(true);
+	}else{
+		if (document.getElementById("oldpwd_up").value == 0)
+		{
+			document.getElementById("show_oldpwd").innerHTML = "&nbsp;&nbsp;<span class=red-text>原密码输入错误！</span>";
+		}
+		if (document.getElementById("password_up").value == 0)
+		{
+			document.getElementById("mima").innerHTML = "&nbsp;&nbsp;<span class=red-text>密码有误！</span>";
+		}
+		if (document.getElementById("password2_up").value == 0)
+		{
+			document.getElementById("mima2").innerHTML = "&nbsp;&nbsp;<span class=red-text>密码有误！</span>";
+		}
+		
+
+		return(false);
+	}
+
+
+}
+
+
+
+
+function chkRegInfo(){
+	if (document.getElementById("verification_code").value == "")
+	{
+		window.location="reg.jsp";
+		return(false);
+	}else{
+		if (document.getElementById("username_up").value == 1 && document.getElementById("password_up").value == 1 && document.getElementById("password2_up").value == 1 && document.getElementById("study_kemu").value != '请选择')
+		{
+			
+			document.getElementById("bkkm").innerHTML = "";
+			return(true);
+		}else{
+			if (document.getElementById("username_up").value == 0)
+			{
+				document.getElementById("youjian").innerHTML = "&nbsp;&nbsp;<span class=red-text>邮箱有误！</span>";
+			}
+			if (document.getElementById("password_up").value == 0)
+			{
+				document.getElementById("mima").innerHTML = "&nbsp;&nbsp;<span class=red-text>密码有误！</span>";
+			}
+			if (document.getElementById("password2_up").value == 0)
+			{
+				document.getElementById("mima2").innerHTML = "&nbsp;&nbsp;<span class=red-text>密码有误！</span>";
+			}			
+			if (document.getElementById("study_kemu").value == '请选择')
+			{
+				document.getElementById("bkkm").innerHTML = "&nbsp;&nbsp;<span class=red-text>请选择！</span>";
+			}
+
+			return(false);
+		}	
+	}
+
+}
+
+function chkUpChengji(){
+	var kaojimen = document.getElementById("kaojimen").value;
+//	alert(kaojimen);
+
+	if (document.getElementById("chengji_sw").value == "")
+	{
+		alert("请选择上午成绩");
+		return(false);
+	}else if(document.getElementById("chengji_xw_a").value == "")
+	{
+		alert("请选择下午成绩一");
+		return(false);
+	}else if(kaojimen == 3 && document.getElementById("chengji_xw_b").value == "")
+	{
+		alert("请选择下午成绩二");
+		return(false);
+	}else{
+		if (confirm("确定吗？上传之后，将不能修改。"))
+		{		
+			return(true);
+		}else{
+			return(false);		
+		}	
+	
+	}
+
+
+
+}
+
+function chkTkZuocuolv(){
+
+
+	var f = document.forms["form1"]; 
+	var checkbox_list = "";
+	for (i=0;i<f.elements.length;i++){
+		if (f.elements[i].name == "nandu"){
+			if (f.elements[i].checked == true)
+			{
+				checkbox_list += "," + f.elements[i].value + ",";			
+			}
+		}		
+	}
+	document.getElementById("checkbox_list").value = checkbox_list;
+
+
+
+
+	var select_kemu_id = document.getElementById("select_kemu_id").value;
+//	alert(tk_keywords);
+	if (select_kemu_id == 0)
+	{
+		alert("请选择科目");
+		return(false);
+	}
+
+
+
+}
+
+
+
+
+
+
+
+function ZujiLeixing(leixing){
+
+	var f = document.forms["form1"]; 
+	var selected = 0;
+	for (i=0;i<f.elements.length;i++){
+		if (f.elements[i].name=="leixing" && f.elements[i].checked == true  && f.elements[i].value == leixing)
+		{
+			selected = 1;
+		}
+	}
+	//1 被选中 0 没选中
+
+	var name_str = "leixing_" + leixing + "_str";
+	var name_str_value = document.getElementById(name_str).value;
+	var aList = name_str_value.split(",");
+	for (i = 0;i < aList.length ;i ++ )
+	{
+		if(aList[i] != "")
+		{
+			if(selected == 1){
+				document.getElementById(aList[i]).style.display = 'block';			
+			}else{
+				document.getElementById(aList[i]).style.display = 'none';						
+			}
+
+		}
+	}
+
+
+}
+
+
+function ZujiZuocuolv(nandu){
+
+	var f = document.forms["form1"]; 
+	var selected = 0;
+	for (i=0;i<f.elements.length;i++){
+		if (f.elements[i].name=="nandu" && f.elements[i].checked == true  && f.elements[i].value == nandu)
+		{
+			selected = 1;
+		}
+	}
+	//1 被选中 0 没选中
+
+	var name_str = "nandu_" + nandu + "_str";
+	var name_str_value = document.getElementById(name_str).value;
+	var aList = name_str_value.split(",");
+	for (i = 0;i < aList.length ;i ++ )
+	{
+		if(aList[i] != "")
+		{
+			var nn = "zuocuolv_" + aList[i];
+			if(selected == 1){
+				document.getElementById(nn).style.display = 'block';			
+			}else{
+				document.getElementById(nn).style.display = 'none';						
+			}
+
+		}
+	}
+
+
+}
+
+
+
+
+
+
+
+function DownloadTkSearch(web_url,tk_keywords){
+//	alert();
+	var f = document.forms["form1"]; 
+//	var tk_keywords = document.getElementById("tk_keywords").value;
+	var select_kemu_id = document.getElementById("select_kemu_id").value;
+//	alert(tk_keywords);
+//	alert(select_kemu_id);
+
+	var leixing_checkbox_list = "";
+	for (i=0;i<f.elements.length;i++){
+		if (f.elements[i].name=="leixing" && f.elements[i].checked == true)
+		{
+			leixing_checkbox_list += f.elements[i].value + "_";
+		}
+	}
+//	alert(tk_keywords);
+	window.open(web_url + "/tk_list_download_1.jsp?tk_keywords=" + tk_keywords + "&kemu_id=" + select_kemu_id + "&leixing_checkbox_list=" + leixing_checkbox_list + "&docu_type=tksearch_list");
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+function chkWdsy(){
+//	alert();
+	var wdsy_keywords = document.getElementById("wdsy_keywords").value;
+
+
+	if (wdsy_keywords == "")
+	{
+		alert("请输入溯源编码");
+		return(false);
+	}else
+	{
+		if (wdsy_keywords.length != 17)
+		{
+			alert("溯源编码应为17位，请重新输入");
+			return(false);
+		}
+	
+	
+	}
+
+
+}
+
+
+
+
+
+
+
+
+
+function chkTkSearch(){
+	var tk_keywords = document.getElementById("tk_keywords").value;
+	var select_kemu_id = document.getElementById("select_kemu_id").value;
+
+//	alert(tk_keywords.length);
+
+	if (tk_keywords == "")
+	{
+		alert("请填写关键词");
+		return(false);
+	}else
+	{
+		if (tk_keywords.length > 100)
+		{
+			alert("关键词不要多于100个字，请精简");
+			return(false);
+		}
+	
+	
+	}
+	if (select_kemu_id == 0)
+	{
+		alert("请选择科目");
+		return(false);
+	}
+
+
+
+}
+
+
+
+function chkUpfile(){
+
+	if (document.getElementById("user_type").value == 0)
+	{
+		document.all.form_upfile.user_type.focus();
+		alert("请选择资料类别！");
+		return(false);
+
+	}
+	if (document.getElementById("user_title").value == "")
+	{
+		document.all.form_upfile.user_title.focus();
+		alert("请填写资料标题！");
+		return(false);
+
+	}
+
+
+
+	if (confirm("我已填写完成，确定上传"))
+	{		
+		return(true);
+	}else{
+		return(false);
+	
+	}
+
+}
+
+function queding(){
+	if (confirm("确定操作吗？"))
+	{		
+		return(true);
+	}else{
+		return(false);
+	
+	}
+}
+
+function uptijiao(){
+	if (confirm("确定提交吗？"))
+	{		
+		alert("感谢您对题库完善做出的努力！我们的老师将会在3个工作日内对您进行反馈。");
+		return(true);
+	}else{
+		return(false);
+	
+	}
+}
+
+function chkModPwd(){
+
+	if (document.getElementById("password_up").value == 1 && document.getElementById("password2_up").value == 1)
+	{
+		return(true);
+	}else{
+
+		if (document.getElementById("password_up").value == 0)
+		{
+			document.getElementById("mima").innerHTML = "&nbsp;&nbsp;<span class=red-text>密码有误！</span>";
+		}
+		if (document.getElementById("password2_up").value == 0)
+		{
+			document.getElementById("mima2").innerHTML = "&nbsp;&nbsp;<span class=red-text>密码有误！</span>";
+		}
+		
+
+		return(false);
+	}
+
+
+}
+
+
+
+function chkForgetPwd(){
+
+	if (document.getElementById("email_up").value == 1)
+	{
+		return(true);
+	}else{
+		return(false);
+	}
+
+
+}
+
+function check_email(nn,url){
+
+//	alert(nn);
+	if (!chkemail(nn)) {
+		document.getElementById("youjian").innerHTML = "&nbsp;&nbsp;<span class=red-text>邮件格式错误！</span>";
+		document.getElementById("email_up").value = 0;
+		return(false);
+	}else{
+		document.getElementById("youjian").innerHTML = "";
+		document.getElementById("email_up").value = 1;
+		return(false);	
+	}
+}
+
+
+
+
+
+function check_modpwd_oldpwd(nn,url){
+
+	var web_url = url + "/check_modpwd_oldpwd_xml.jsp?oldpwd=" + nn + ""; 
+//	alert(nn);
+	$.get(web_url, {cache:false},function (data, textStatus){
+		if (data.indexOf("wrong")!= -1)//原密码输入错误
+		{
+			document.getElementById("show_oldpwd").innerHTML = "&nbsp;&nbsp;<span class=red-text>原密码输入错误！</span>";
+			document.getElementById("oldpwd_up").value = 0;
+			return(false);
+		}else{//原密码输入正确
+			document.getElementById("show_oldpwd").innerHTML = "&nbsp;&nbsp;<img src=" + url + "/image/duigou.gif width=13 height=13>";
+			document.getElementById("oldpwd_up").value = 1;
+			return(true);
+		}
+	});
+
+//	alert(document.all.form1.username_up.value);
+}
+
+
+
+
+function check_verification_code(nn,url){
+
+	var web_url = url + "/check_verification_code_xml.jsp?verification_code=" + nn + ""; 
+//	alert(nn);
+	if (nn.length == 6) {
+		$.get(web_url, {cache:false},function (data, textStatus){
+	//		alert(trim(data));
+			if (data.indexOf("have") != -1)//有验证码
+			{
+				document.getElementById("verification_code_area").innerHTML = "&nbsp;&nbsp;<img src=" + url + "/image/duigou.gif width=13 height=13>";
+				document.getElementById("verification_code_up").value = 1;
+				return(true);				
+			}else{//无验证码
+				document.getElementById("verification_code_area").innerHTML = "&nbsp;&nbsp;<span class=red-text>验证码无效,请重新获取！</span>";
+				document.getElementById("verification_code_up").value = 0;
+				return(false);
+			}	
+		});
+	}else{
+		document.getElementById("verification_code_area").innerHTML = "&nbsp;&nbsp;<span class=red-text>验证码错误！</span>";
+		document.getElementById("verification_code_up").value = 0;
+		return(false);	
+	}
+}
+
+
+
+
+
+
+function jiajiagou(product_id,sale_price,yuanshi_price,jiajiagou_list,father_product_id){
+
+	var one = "|" + product_id + "_" + sale_price + "_" + yuanshi_price + "_" + father_product_id;
+//	alert(one);
+
+	var button_name = "jiajiagou_" + product_id + "_" + father_product_id;
+	var str = jiajiagou_list;
+
+	var f = document.forms["formcart"]; 
+	for (i=0;i<f.elements.length;i++){
+
+		if (f.elements[i].name == button_name)
+		{
+			if (f.elements[i].checked == true)
+			{
+//				alert("jj");
+				str = str + "" + one;
+//				alert("jj" + str);
+
+			}else if(f.elements[i].checked == false){
+				str = str.replace(one,"");
+			}
+
+		}
+	}
+//	alert(str);
+
+	document.getElementById("jiajiagou_list").value = str;
+//	alert(document.getElementById("jiajiagou_list").value);
+
+	f.action = "cart.jsp";
+	f.submit();
+
+
+}
+
+
+
+
+
+
+
+function check_username(nn,url){
+
+	var web_url = url + "/check_same_name_xml.jsp?username=" + nn + ""; 
+//	alert(nn);
+	if (!chkemail(nn)) {
+		document.getElementById("youjian").innerHTML = "&nbsp;&nbsp;<span class=red-text>邮件格式错误！</span>";
+	//	document.all.form1.username.focus();
+		document.getElementById("username_up").value = 0;
+		return(false);
+	}else{
+
+		$.get(web_url, {cache:false},function (data, textStatus){
+			if (data.indexOf("chongfu")!= -1)//有重复
+			{
+				document.getElementById("youjian").innerHTML = "&nbsp;&nbsp;<span class=red-text>邮箱已经注册过！</span>";
+				document.getElementById("username_up").value = 0;
+				return(false);
+			}else{
+				document.getElementById("youjian").innerHTML = "&nbsp;&nbsp;<img src=" + url + "/image/duigou.gif width=13 height=13>";
+				document.getElementById("username_up").value = 1;
+				return(true);
+			}
+		});
+
+
+	
+	}
+//	alert(document.all.form1.username_up.value);
+}
+
+function check_password(nn,url){
+
+//	var f = document.forms["form_reg"];
+//	document.getElementById("mima").innerHTML = "&nbsp;&nbsp;<span class=red-text>密码不能为空！</span>";	
+//	alert(document.getElementsByName("mima"));
+/*	alert(f.elements.length);
+	for (i=0;i<f.elements.length;i++){
+		alert("j");
+		if (f.elements[i].name=="mima"){
+			alert("k");
+			f.elements[i].innerHTML = "&nbsp;&nbsp;<span class=red-text>密码不能为空！</span>";		
+		}
+	}
+*/
+	if (nn == "")
+	{
+		document.getElementById("mima").innerHTML = "&nbsp;&nbsp;<span class=red-text>密码不能为空！</span>";
+		document.getElementById("password_up").value = 0;
+		document.getElementById("password2_up").value = 0;
+		document.getElementById("mima2").innerHTML = "";
+		return(false);
+	}else if(nn.indexOf("=") != -1 || nn.indexOf("%") != -1 || nn.indexOf("*") != -1 || nn.indexOf(";") != -1 || nn.indexOf("'") != -1){
+		document.getElementById("mima").innerHTML = "&nbsp;&nbsp;<span class=red-text>密码中含有非法字符！</span>";
+		document.getElementById("password_up").value = 0;
+		document.getElementById("password2_up").value = 0;
+		document.getElementById("mima2").innerHTML = "";
+		return(false);
+	}else{
+		document.getElementById("mima").innerHTML = "&nbsp;&nbsp;<img src=" + url + "/image/duigou.gif width=13 height=13>";
+		document.getElementById("password_up").value = 1;
+		document.getElementById("password2_up").value = 0;
+		document.getElementById("mima2").innerHTML = "";
+		return(true);		
+	}
+
+}
+
+
+function check_password2(nn,url){
+//	alert(nn);
+	var mm = document.getElementById("password1").value;
+//	alert(mm);
+	if (nn != mm)
+	{
+		document.getElementById("mima2").innerHTML = "&nbsp;&nbsp;<span class=red-text>两次密码不一致！</span>";
+		document.getElementById("password2_up").value = 0;
+		return(false);
+	}else{
+		document.getElementById("mima2").innerHTML = "&nbsp;&nbsp;<img src=" + url + "/image/duigou.gif width=13 height=13>";
+		document.getElementById("password2_up").value = 1;
+		return(true);		
+	}
+}
+
+function check_xieyi(){
+	var f = document.forms["form_reg"]; 
+	var selected = 0;
+	for (i=0;i<f.elements.length;i++){
+		if (f.elements[i].name=="xieyi" && f.elements[i].checked == true)
+		{
+			selected = 1;
+			document.getElementById("xy").innerHTML = "";
+		}
+	}
+	document.getElementById("xieyi_up").value = selected;
+}
+
+
+
+
+function chkRegInfoStep1(){
+//	alert(document.getElementById("study_kemu").value);
+	if (document.getElementById("verification_code_up").value == 1 && document.getElementById("xieyi_up").value == 1 )
+	{		
+		return(true);
+	}else{
+		if (document.getElementById("verification_code_up").value == 0)
+		{
+			document.getElementById("verification_code_area").innerHTML = "&nbsp;&nbsp;<span class=red-text>验证码错误！</span>";
+		}
+		if (document.getElementById("xieyi_up").value == 0)
+		{
+			document.getElementById("xy").innerHTML = "&nbsp;&nbsp;<span class=red-text>协议未同意！</span>";
+		}
+		
+		return(false);
+	}
+
+
+}
+
+function chkLoginInfoStep2(){
+//	alert(document.getElementById("study_kemu").value);
+	if (document.getElementById("verification_code_up").value == 1 )
+	{		
+		return(true);
+	}else{
+		if (document.getElementById("verification_code_up").value == 0)
+		{
+			document.getElementById("verification_code_area").innerHTML = "&nbsp;&nbsp;<span class=red-text>验证码错误！</span>";
+		}
+				
+		return(false);
+	}
+
+
+}
+
+
+
+function uppay(){
+	document.getElementById('popIframe').style.display='block';
+	document.getElementById('loginBox').style.display='block';
+
+
+	var f = document.forms["formconfirm"]; 
+	var selected = 0;
+	for (i=0;i<f.elements.length;i++){
+		if (f.elements[i].name=="bank" && f.elements[i].checked == true)
+		{
+			selected = f.elements[i].value;
+		}
+	}
+//	alert(selected);
+	if (selected == 'kuaiqian')
+	{
+		f.action='billion/send.jsp';
+	}else if(selected == 'alipay'){
+		f.action='alipaydirect/send.jsp';		
+	}
+
+	
+
+	f.submit();
+}
+
+
+
+
+
+
+
+
+function showtupian_forpackageshow_3(product_id,url,product_kemu_id,type){
+//	alert();
+	var web_url = url + "/showtupian_forproductshow_3.jsp?product_id=" + product_id + "&product_kemu_id=" + product_kemu_id + "&type=" + type + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+	//	alert(data);
+		document.getElementById("tupian_show").innerHTML = data;
+	//	document.getElementById("datu").innerHTML = path;
+	//	show_datu('kemu1/image_yulan/20130308143217_11.jpg');
+
+	});
+
+
+}
+
+
+
+function showtupian_forpackageshow_2(product_id,url,product_kemu_id){
+//	alert();
+	var web_url = url + "/showtupian_forproductshow.jsp?product_id=" + product_id + "&product_kemu_id=" + product_kemu_id + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+	//	alert(data);
+		document.getElementById("tupian_show").innerHTML = data;
+	//	document.getElementById("datu").innerHTML = path;
+	//	show_datu('kemu1/image_yulan/20130308143217_11.jpg');
+
+	});
+
+
+}
+
+
+function showtupian_forpackageshow(no,product_id,path,url,product_kemu_id){
+	var web_url = url + "/showtupian_forpackageshow.jsp?no=" + no + "&product_id=" + product_id + "&path=" + path + "&product_kemu_id=" + product_kemu_id + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+	//	alert(data);
+		document.getElementById("tupian_show").innerHTML = data;
+	//	document.getElementById("datu").innerHTML = path;
+	//	show_datu('kemu1/image_yulan/20130308143217_11.jpg');
+
+	});
+
+
+}
+
+function showtupian_forplanshow(no,product_id,path,url,k,color,product_kemu_id){
+//	alert(color);
+	var web_url = url + "/showtupian_forplanshow.jsp?no=" + no + "&product_id=" + product_id + "&path=" + path + "&color=" + color + "&product_kemu_id=" + product_kemu_id + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+		var kkk = "tupian_show_" + k;
+	//	alert(kkk);
+
+		document.getElementById(kkk).innerHTML = data;
+	//	document.getElementById("datu").innerHTML = path;
+	//	show_datu('kemu1/image_yulan/20130308143217_11.jpg');
+
+	});
+
+
+}
+
+
+
+
+function check_if_show_select_fun(url,web_url){
+	
+	var web_url2 = web_url + "/check_if_show_select.jsp"; 
+	$.get(web_url2, {cache:false},function (data, textStatus){
+		if (data.indexOf("-show-")!= -1)//符合弹出
+		{
+			//弹出提示框
+			document.getElementById('xianshi').style.display = 'block';
+		}
+
+	});
+
+
+}
+
+
+
+
+function goto_kemu_fun(url,web_url){
+	
+	//url 本页面是什么
+	if (url == "http://www.rkpass.cn/" || url == "http://www.rkpass.cn" ||  url == "http://rkpass.cn" ||  url == "http://rkpass.cn/" ||  url == "www.rkpass.cn" ||  url == "www.rkpass.cn/"  ||  url == "rkpass.cn" ||  url == "rkpass.cn/" )//默认网址加上.html后缀
+	{
+		//对默认的第一科规范网址，为了后面比较用
+		url = "http://www.rkpass.cn/index.html"
+	}
+	//下面这个是在开发环境中用的
+	else if (url == "http://localhost:8080/ruankao_web_version_0103//index.html" || url == "http://localhost:8080/ruankao_web_version_0103/index.html")
+	{
+		url = "http://localhost:8080/ruankao_web_version_0103/index.html"
+	}
+
+
+	//当用户没有登陆的时候，跳转到这个ip最后一个访问科目去;当登陆了，跳转到这个用户的最后一次访问科目去
+	var web_url2 = web_url + "/searchkemu.jsp"; 
+	$.get(web_url2, {cache:false},function (data, textStatus){
+		if (data.indexOf("--")!= -1)//没有访问记录
+		{
+			//弹出提示框
+			document.getElementById('xianshi').style.display = 'block';
+		}else if (data.indexOf("-1-")!= -1)//kemu1
+		{
+			if (url.indexOf("index.html") == -1)
+			{
+				window.location = web_url + "/index.html";
+			}	
+		}else if (data.indexOf("-2-")!= -1)//kemu2
+		{
+			if (url.indexOf("index2.html") == -1)
+			{
+				window.location = web_url + "/index2.html";
+			}
+		}else if (data.indexOf("-3-")!= -1)//kemu3
+		{
+			if (url.indexOf("index3.html") == -1)
+			{
+				window.location = web_url + "/index3.html";
+			}
+		}else if (data.indexOf("-4-")!= -1)//kemu4
+		{
+			if (url.indexOf("index4.html") == -1)
+			{
+				window.location = web_url + "/index4.html";
+			}
+		}else if (data.indexOf("-5-")!= -1)//kemu5
+		{
+			if (url.indexOf("index5.html") == -1)
+			{
+				window.location = web_url + "/index5.html";
+			}
+		}else if (data.indexOf("-6-")!= -1)//kemu6
+		{
+			if (url.indexOf("index6.html") == -1)
+			{
+				window.location = web_url + "/index6.html";
+			}
+		}else if (data.indexOf("-7-")!= -1)//kemu7
+		{
+			if (url.indexOf("index7.html") == -1)
+			{
+				window.location = web_url + "/index7.html";
+			}
+		}else if (data.indexOf("-8-")!= -1)//kemu8
+		{
+			if (url.indexOf("index8.html") == -1)
+			{
+				window.location = web_url + "/index8.html";
+			}
+		}else if (data.indexOf("-9-")!= -1)//kemu9
+		{
+			if (url.indexOf("index9.html") == -1)
+			{
+				window.location = web_url + "/index9.html";
+			}
+		}else if (data.indexOf("-10-")!= -1)//kemu10
+		{
+			if (url.indexOf("index10.html") == -1)
+			{
+				window.location = web_url + "/index10.html";
+			}
+		}else if (data.indexOf("-11-")!= -1)//kemu11
+		{
+			if (url.indexOf("index11.html") == -1)
+			{
+				window.location = web_url + "/index11.html";
+			}
+		}else if (data.indexOf("-12-")!= -1)//kemu12
+		{
+			if (url.indexOf("index12.html") == -1)
+			{
+				window.location = web_url + "/index12.html";
+			}
+		}else if (data.indexOf("-13-")!= -1)//kemu13
+		{
+			if (url.indexOf("index13.html") == -1)
+			{
+				window.location = web_url + "/index13.html";
+			}
+		}else if (data.indexOf("-14-")!= -1)//kemu14
+		{
+			if (url.indexOf("index14.html") == -1)
+			{
+				window.location = web_url + "/index14.html";
+			}
+		}else if (data.indexOf("-15-")!= -1)//kemu15
+		{
+			if (url.indexOf("index15.html") == -1)
+			{
+				window.location = web_url + "/index15.html";
+			}
+		}else if (data.indexOf("-16-")!= -1)//kemu16
+		{
+			if (url.indexOf("index16.html") == -1)
+			{
+				window.location = web_url + "/index16.html";
+			}
+		}else if (data.indexOf("-17-")!= -1)//kemu17
+		{
+			if (url.indexOf("index17.html") == -1)
+			{
+				window.location = web_url + "/index17.html";
+			}
+		}
+
+	});
+
+
+	//当用户登陆之后，跳转到session中的科目去
+
+}
+
+function gokemu(url,web_url){
+	//等有了至少两科后 ，再打开此函数
+/*
+	if (url == "http://www.rkpass.cn/" || url == "http://www.rkpass.cn" )//默认网址加上.html后缀
+	{
+		url = "http://www.rkpass.cn/index.html"
+	}else if (url == "http://localhost:8080/rk_web/index.jsp")
+	{
+		url = "http://localhost:8080/rk_web/index.html"
+	}	
+	if (url.indexOf("index.html") != -1 || url.indexOf("index2.html") != -1 )//只有主页才跳转，如果直接进分页面不跳转
+	{
+		var web_url2 = web_url + "/gokemu.jsp"; 
+		$.get(web_url2, {cache:false},function (data, textStatus){
+			if (data.indexOf("--")!= -1)//没有访问记录
+			{
+				document.getElementById('xianshi').style.display = 'block';
+			}else if (data.indexOf("-1-")!= -1)//kemu1
+			{
+				if (url.indexOf("index.html") == -1)
+				{
+					window.location = web_url + "/index.html";
+				}	
+			}else if (data.indexOf("-2-")!= -1)//kemu2
+			{
+				if (url.indexOf("index2.html") == -1)
+				{
+					window.location = web_url + "/index2.html";
+				}
+			}
+		});
+	}
+*/
+}
+
+
+function savekemu(web_url,kemu_id){
+
+	var web_url2 = web_url + "/savekemu.jsp?kemu_id=" + kemu_id + ""; 
+	$.get(web_url2, {cache:false},function (data, textStatus){
+	});
+
+}
+
+
+function select_kemu(url,web_url,select_kemu_id,mubiao_url){
+
+	url = url.replace(/&/g,"---");
+	url = url.replace("?","___");
+//	alert(url);
+//	alert("jiji" + web_url);
+
+	var web_url2 = web_url + "/addtrace_select_kemu.jsp?url_save=" + url + "&select_kemu_id=" + select_kemu_id + ""; 
+	$.get(web_url2, {cache:false},function (data, textStatus){
+
+		window.location = web_url + "/" + mubiao_url + "";
+	});
+}
+
+function addtrace(url,web_url){
+
+	url = url.replace(/&/g,"---");
+	url = url.replace("?","___");
+//	alert(url);
+//	alert("jiji" + web_url);
+
+	var web_url2 = web_url + "/addtrace.jsp?url_save=" + url + ""; 
+	$.get(web_url2, {cache:false},function (data, textStatus){
+	});
+
+}
+
+
+
+function formlogout_func(url,web_url){
+
+//	alert();
+
+	url = url.replace(/&/g,"---");
+	url = url.replace("?","___");
+	document.getElementById("formlogout_back_url").value = url;
+//	alert(document.getElementById("formlogout_back_url").value);
+	formlogout.submit();
+
+
+//	var web_url2 = web_url + "/addtrace.jsp?url_save=" + url + ""; 
+//	$.get(web_url2, {cache:false},function (data, textStatus){
+//	});
+}
+
+
+function formlogin_func(url,web_url){
+
+//	alert();
+//	url = url.replace(/&/g,"---");
+//	url = url.replace("?","___");
+	document.getElementById("formlogin_back_url").value = url;
+//	alert(document.getElementById("formlogout_back_url").value);
+//	alert();
+
+	formlogin.submit();
+
+}
+
+function formreg_func(url,web_url){
+
+	url = url.replace(/&/g,"---");
+	url = url.replace("?","___");
+	document.getElementById("formreg_back_url").value = url;
+//	alert(document.getElementById("formlogout_back_url").value);
+	formreg.submit();
+
+}
+
+
+
+
+function selectall(){
+
+
+  var f = document.forms["form_list"]; 
+  var checked = 0;
+  for (i=0;i<f.elements.length;i++){
+    if (f.elements[i].name == "all"){
+		if (f.elements[i].checked == true)
+		{
+			checked = 1;			
+		}
+	}		
+  }
+ 
+  for (i=0;i<f.elements.length;i++){
+    if (f.elements[i].name == "one_product_id"){
+		if (checked == 1)
+		{
+			f.elements[i].checked = true; 
+		}else{
+			f.elements[i].checked = false; 
+		
+		}
+	}		
+  }
+
+}
+
+
+
+
+function ci_show(mm,nn){
+	//	alert(nn);
+	//	alert(mm);
+	//mm 词标签列表
+	//nn 需要显示的词
+	
+	var k = 0;
+	var aList = mm.split(",");
+	for (i = 0;i < aList.length ;i ++ )
+	{
+		if(aList[i] != "")
+		{	
+			//将词标签设置为未选状态
+			var name_done_title = "ci_title_" + aList[i];
+			document.getElementById(name_done_title).style.background="#f6f6f6";
+			document.getElementById(name_done_title).style.color="#000000";
+			
+			//将词区域隐藏
+			var name_done = "ci_detail_" + aList[i];
+			document.getElementById(name_done).style.display = 'none';
+
+			k++;
+		}
+	}
+
+	if ( k>0 )//说明有本次显示有词标签
+	{
+		//针对'全部'这个状态词标签
+		//将词标签设置为未选状态
+		var name_done_title = "ci_title_30";
+		document.getElementById(name_done_title).style.background="#f6f6f6";
+		document.getElementById(name_done_title).style.color="#000000";
+		
+		//将词区域隐藏
+		var name_done = "ci_detail_30";
+		document.getElementById(name_done).style.display = 'none';
+
+	}else{//本次显示没有词标签
+		//不操作，因为页面没有全部这个标签，操作就会报错
+	
+	}
+
+	//显示需要显示的词标签
+	var display_name_done_title = "ci_title_" + nn;
+	document.getElementById(display_name_done_title).style.background="#e3393c";
+	document.getElementById(display_name_done_title).style.color="#ffffff";
+
+	//显示需要显示的词区域
+	var display_name_done = "ci_detail_" + nn;
+	document.getElementById(display_name_done).style.display = 'block';
+				
+
+
+}
+
+
+
+function plan1click(nn,mm,TheForm,uu){
+//  alert(nn);
+//  alert(mm);
+
+ // alert(uu);
+  if (uu == "plan1area11")
+  {
+	  document.getElementById("plan1area12").style.background="#FFFFFF";
+	  document.getElementById("plan1area13").style.background="#FFFFFF";
+  }else if(uu == "plan1area12"){
+	  document.getElementById("plan1area11").style.background="#FFFFFF";
+	  document.getElementById("plan1area13").style.background="#FFFFFF";
+  }else if(uu == "plan1area13"){
+	  document.getElementById("plan1area11").style.background="#FFFFFF";
+	  document.getElementById("plan1area12").style.background="#FFFFFF";
+  }
+
+
+
+  var f = document.forms["form_plan_step1"]; 
+  for (i=0;i<f.elements.length;i++){
+    if (f.elements[i].name == nn && f.elements[i].value == mm){
+		f.elements[i].checked = true; 
+		TheForm.style.background="#99D482";
+	}		
+  }
+
+}
+
+function plan1out(nn,mm,TheForm){
+//  alert(nn);
+ // alert(mm);
+  var kk = 0;
+  var f = document.forms["form_plan_step1"]; 
+  for (i=0;i<f.elements.length;i++){
+    if (f.elements[i].name == nn && f.elements[i].value == mm && f.elements[i].checked == true){
+		kk = 1;
+	}		
+  }
+//  alert(kk);
+  if (kk == 0)
+  {
+//		alert();
+		TheForm.style.background="#FFFFFF";
+  }else{
+		TheForm.style.background="#99D482";
+  }
+
+}
+
+function plan2click(nn,mm,TheForm,uu){
+//  alert(nn);
+//  alert(mm);
+
+ // alert(uu);
+  if (uu == "plan2area11")
+  {
+	  document.getElementById("plan2area12").style.background="#FFFFFF";
+	  document.getElementById("plan2area13").style.background="#FFFFFF";
+  }else if(uu == "plan2area12"){
+	  document.getElementById("plan2area11").style.background="#FFFFFF";
+	  document.getElementById("plan2area13").style.background="#FFFFFF";
+  }else if(uu == "plan2area13"){
+	  document.getElementById("plan2area11").style.background="#FFFFFF";
+	  document.getElementById("plan2area12").style.background="#FFFFFF";
+  }
+
+
+
+  var f = document.forms["form_plan_step2"]; 
+  for (i=0;i<f.elements.length;i++){
+    if (f.elements[i].name == nn && f.elements[i].value == mm){
+		f.elements[i].checked = true; 
+		TheForm.style.background="#A5DCF0";
+	}		
+  }
+
+}
+
+function plan2out(nn,mm,TheForm){
+//  alert(nn);
+ // alert(mm);
+  var kk = 0;
+  var f = document.forms["form_plan_step2"]; 
+  for (i=0;i<f.elements.length;i++){
+    if (f.elements[i].name == nn && f.elements[i].value == mm && f.elements[i].checked == true){
+		kk = 1;
+	}		
+  }
+//  alert(kk);
+  if (kk == 0)
+  {
+//		alert();
+		TheForm.style.background="#FFFFFF";
+  }else{
+		TheForm.style.background="#A5DCF0";
+  }
+
+}
+
+
+function showdenglu(){
+	document.getElementById('popIframe').style.display='block';
+	document.getElementById('loginBox').style.display='block';
+}
+
+
+function userstudy(product_id,tixing,answer,url,paper_id,answer_option,look_jiexi,tihao){
+//	alert(product_id + "_" + tixing + "_" + answer + "_" + url + "_" + paper_id + "_" + answer_option + "_" + look_jiexi + "_" + tihao);
+	showjiexi(product_id,tixing,answer,url,paper_id,answer_option,look_jiexi,tihao);
+
+}
+
+
+function ii(){
+	alert('hu');
+}
+
+
+function goto_next_timu(goto_tihao,url,goto_paper_id){
+	document.getElementById("goto_tihao").value = goto_tihao;
+	document.getElementById("goto_paper_id").value = goto_paper_id;
+
+//	alert(document.getElementById("right_wrong").value);
+
+	form_daohang.submit();
+}
+
+
+function goto_next_timu_pn(goto_tihao,url,goto_paper_id){
+	document.getElementById("goto_tihao_pn").value = goto_tihao;
+	document.getElementById("goto_paper_id_pn").value = goto_paper_id;
+
+	form_daohang_pn.submit();
+}
+
+
+
+function showdaohang(product_id,url,paper_id,tixing,daohang_type,daohang_kemu_id){
+//	alert(tixing);
+	var web_url = "";
+	if (daohang_type == 0)
+	{
+		web_url = url + "/tk_th_daohang.jsp?product_id=" + product_id + "&paper_id=" + paper_id + "&tixing=" + tixing + "&daohang_type=" + daohang_type + "&daohang_kemu_id=" + daohang_kemu_id + ""; 
+	}else if(daohang_type == 1 || daohang_type == 2){
+		web_url = url + "/tk_th_daohang_my.jsp?product_id=" + product_id + "&paper_id=" + paper_id + "&tixing=" + tixing + "&daohang_type=" + daohang_type + "&daohang_kemu_id=" + daohang_kemu_id + ""; 	
+	}
+
+	$.get(web_url, {cache:false},function (data, textStatus){
+		document.getElementById('th_daohang_area').style.display='block';
+		document.getElementById("th_daohang_area").innerHTML = data;
+	});
+}
+
+
+function save_tj_type(tj_type,answer_time){
+	document.getElementById('tj_type').value = tj_type;
+
+	var answer_time_str = answer_time.split(" ");
+	var shi = parseInt(answer_time_str[0]);
+	var fen = parseInt(answer_time_str[1]);
+	var miao = parseInt(answer_time_str[2]);
+	var answer_time_haomiao = parseInt(answer_time_str[0]) * 3600 + parseInt(answer_time_str[1]) * 60 + parseInt(answer_time_str[2]);
+	document.getElementById('tj_answer_time').value = answer_time_haomiao;
+
+
+}
+
+
+
+function changeaction(type){
+//	alert(sheet_list);
+//	alert(tj_type);
+
+
+	if (type == 1 || type == 2)
+	{
+		document.forms["form_chongci_fufei"].action = "../dealwithcenter.jsp?action=tk_fufei_kt";
+	}
+	else if (type == 3)//
+	{
+		document.forms["form_chongci_fufei"].action = "../dealwithcenter.jsp?action=tk_chongci_kt";
+	}
+
+
+}
+
+
+function tijiao_zice(sheet_list,tj_type){
+//	alert(sheet_list);
+//	alert(tj_type);
+
+
+
+
+	if (tj_type == 2)//暂停
+	{
+//		window.location="tk_zice_paper_list.jsp";
+		document.forms["form_zice_paper"].action = "tk_my_zice.jsp";
+
+
+	}else if (tj_type == 1)//提交
+	{
+		var finish = 1;
+		var sheet_list_str = sheet_list.split("_");
+		for (i = 0;i < sheet_list_str.length ;i ++ )
+		{
+			if(sheet_list_str[i] != "")
+			{	
+				var sheet_question_str = sheet_list_str[i].split("|");
+			//	alert(sheet_list_str[i]);
+				if (sheet_question_str[1] == 0)
+				{
+					finish = 0;
+				}			
+			}
+		}
+		var tishi = "";
+		if (finish == 0)
+		{
+			tishi = "还有未做完试题，您确定提交试卷吗？";
+		}else if(finish == 1){
+			tishi = "您确定提交试卷吗？";		
+		}
+
+
+		
+		if (confirm(tishi))
+		{
+			return true;
+			
+		}else{
+			return false;	
+		}
+	}
+
+
+}
+
+
+function start_zujuan(fw,timu,cnt,tihao_shunxu,xuanxiang_shunxu,time,kemu_selected,ruanfan,user_id){
+	//用户是否登录
+	//检查是否有软饭功能被选了 如果有提示
+	//检查内容是否选全了
+	
+//	alert();
+
+	if(user_id == 0){//用户没有登录
+		document.getElementById('text_area_2').style.display='block';
+		return false;
+	}
+
+	//先关掉有可能上次点击鼠标时候的弹出提示
+	document.getElementById('text_area_6').style.display='none';
+	//检查是否有软饭功能被选了 如果有提示
+	if (ruanfan == 0 && (fw == 6 || xuanxiang_shunxu == 2))//非软饭会员 选择了软饭的选项
+	{
+	//	alert();
+		document.getElementById('text_area_6').style.display='block';
+		return false;
+	}
+	//检查内容是否选全了
+	if (fw == 5)
+	{
+		if (timu == '')
+		{
+			alert('请选择分类范围');
+			return false;
+		}
+	}
+	if (fw == 6)
+	{
+		if (timu == '')
+		{
+			alert('请选择星级范围');
+			return false;
+		}
+	}
+
+	//如果都没问题了 就开始提交 进入下一步了
+	if (confirm("您确定要按所选方式开始组卷吗？"))
+	{
+//		alert();
+		return true;
+	}else{
+		return false;
+	}
+
+
+}
+
+function showtextarea1_zice(name){
+		document.getElementById(name).style.display='block';
+
+}
+
+
+function showtextarea1(){
+		document.getElementById('text_area_1').style.display='block';
+		document.getElementById('text_area_2').style.display='none';
+
+}
+
+function showdenglu_tishi(){
+		document.getElementById('text_area_2').style.display='block';
+		document.getElementById('text_area_1').style.display='none';
+
+}
+
+
+
+
+function showtextarea2(){
+		document.getElementById('text_area_2').style.display='block';
+		document.getElementById('text_area_1').style.display='none';
+
+}
+
+
+function showjiexi(product_id,tixing,answer,url,paper_id,answer_option,look_jiexi,tihao){
+//	alert(tixing);
+	var chuan_tixing = 0;
+	if (tixing == 'xuanze')
+	{
+		chuan_tixing = 1;
+	}else if (tixing == 'anli' || tixing == 'lunwen')
+	{
+		chuan_tixing = 2;
+	}
+	var web_url = url + "/tk_jiexi.jsp?product_id=" + product_id + "&tixing=" + chuan_tixing + "&answer=" + answer + "&paper_id=" + paper_id + "&look_jiexi=" + look_jiexi + "&tihao=" + tihao + ""; 
+//	alert(web_url);
+	$.get(web_url, {cache:false},function (data, textStatus){
+		document.getElementById("jiexi_area").style.display='block';
+		document.getElementById("jiexi_area").innerHTML = data;
+
+		if (answer != null)//有用户答案
+		{
+			if(answer_option != ''){//有标准答案
+				if (answer_option == answer)
+				{
+					document.getElementById("right_wrong").value = "right";
+					document.getElementById("right_wrong_pn").value = "right";
+				}else{
+					document.getElementById("right_wrong").value = "wrong";	
+					document.getElementById("right_wrong_pn").value = "wrong";	
+				}
+			}else{//没有标准答案
+				document.getElementById("right_wrong").value = "no_standard_answer";
+				document.getElementById("right_wrong_pn").value = "no_standard_answer";
+			}
+		}else{//没有作答，直接看解析
+		//	alert();		
+		}
+
+
+
+	//	showdaohang(product_id,url,paper_id,tixing);
+	});
+	
+
+}
+
+function showbiaoji(product_id,url,paper_id,ok){
+//	alert();
+	var web_url = url + "/tk_biaoji_iframe_xml.jsp?product_id=" + product_id + "&ok=" + ok + "&paper_id=" + paper_id + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+		document.getElementById('biaoji_area').style.display='block';
+		document.getElementById("biaoji_area").innerHTML = data;
+	});
+}
+
+
+
+
+function delbiaoji(product_id,url){
+//	alert('l');
+	var web_url = url + "/tk_del_biaoji.jsp?product_id=" + product_id + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){				
+	});
+	window.location.reload();
+}
+
+
+
+function show_share_button(pingtai_name){
+//	alert();
+	document.getElementById("share_div").style.display = "block";
+	document.getElementById("share_mudi_web").value = pingtai_name;
+
+}
+
+function share_done(nn){
+
+	if (confirm("我已分享完成？"))
+	{
+	//	form1.submit();
+
+		var share_mudi_web = document.getElementById("share_mudi_web").value;
+		var order_id = document.getElementById("order_id").value;
+	//	alert(order_id);
+		window.location="dealwithcenter.jsp?action=share&type=" + nn + "&share_mudi_web=" + share_mudi_web + "&order_id=" + order_id + "";
+
+	}else{
+	
+	
+	}
+
+//	document.getElementById("share_div").style.display = "block";
+//	document.getElementById("share_mudi_web").value = pingtai_name;
+
+}
+
+
+
+
+
+
+function addfavorite(sURL, sTitle)
+{
+    try
+    {
+        window.external.addFavorite(sURL, sTitle);
+    }
+    catch (e)
+    {
+        try
+        {
+            window.sidebar.addPanel(sTitle, sURL, "");
+        }
+        catch (e)
+        {
+            alert("加入收藏失败，请使用Ctrl+D进行添加");
+        }
+    }
+}
+
+
+
+
+function show_tihao_user_chongci(paper_id,url){
+
+
+	//显示做每个题的次数
+	web_url = url + "/tk_paper_tihao_show_chongci.jsp?paper_id=" + paper_id + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+		data = data.replace(/[ ]/g,"");//去空格
+		data = data.replace(/[\r\n]/g,"");//去回车
+		var type_str = data.split("|");
+
+
+
+		//做过
+		var aList = type_str[0].split(";");
+		for (i = 0;i < aList.length ;i ++ )
+		{
+			if(aList[i] != "")
+			{	
+				var blist = aList[i].split(",");
+				var name = "done_" + blist[0];
+				var s=document.getElementById(name);//判断这个id的div是否存在
+				if(s){
+					document.getElementById(name).innerHTML = "" + blist[1] + "&nbsp;";
+				}
+
+				var name_b = "tihao_" + blist[0];
+				var s_b=document.getElementById(name_b);//判断这个id的div是否存在
+				if(s_b){
+					document.getElementById(name_b).style.background = "#e4e4e4";
+				}								
+
+
+
+			}
+		}
+
+
+		//做错
+		var aalist = type_str[1].split(";");
+		for (i = 0;i < aalist.length ;i ++ )
+		{
+			if(aalist[i] != "")
+			{	
+				var bblist = aalist[i].split(",");
+				var name = "wrong_" + bblist[0];
+				var s=document.getElementById(name);//判断这个id的div是否存在
+				if(s){
+					document.getElementById(name).innerHTML = "<img src=" + url + "/image/cuo2.gif class=juzhong width=16  height=16 >";
+				}
+			}
+		}
+
+
+
+		//标记
+		var aaalist = type_str[2].split(";");
+		for (i = 0;i < aaalist.length ;i ++ )
+		{
+			if(aaalist[i] != "")
+			{	
+				var bbblist = aaalist[i].split(",");
+				var name = "biaoji_" + bbblist[0];
+				var s=document.getElementById(name);//判断这个id的div是否存在
+				if(s){
+					document.getElementById(name).innerHTML = "<img src=" + url + "/image/hongqi.gif class=juzhong width=16  height=16 >";
+				}
+			}
+		}
+
+
+	});
+
+	
+
+	
+
+}
+
+
+
+function show_tihao_user(paper_id,url){
+
+
+	//显示做每个题的次数
+	web_url = url + "/tk_paper_tihao_show.jsp?paper_id=" + paper_id + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+	//	alert(data);
+		data = data.replace(/[ ]/g,"");//去空格
+		data = data.replace(/[\r\n]/g,"");//去回车
+		var type_str = data.split("|");
+
+
+
+		//做过
+		var aList = type_str[0].split(";");
+		for (i = 0;i < aList.length ;i ++ )
+		{
+			if(aList[i] != "")
+			{	
+				var blist = aList[i].split(",");
+				var name = "done_" + blist[0];
+				var s=document.getElementById(name);//判断这个id的div是否存在
+				if(s){
+					document.getElementById(name).innerHTML = "" + blist[1] + "&nbsp;";
+				}
+
+				var name_b = "tihao_" + blist[0];
+				var s_b=document.getElementById(name_b);//判断这个id的div是否存在
+				if(s_b){
+					document.getElementById(name_b).style.background = "#e4e4e4";
+				}								
+
+
+
+			}
+		}
+
+
+		//做错
+		var aalist = type_str[1].split(";");
+		for (i = 0;i < aalist.length ;i ++ )
+		{
+			if(aalist[i] != "")
+			{	
+				var bblist = aalist[i].split(",");
+				var name = "wrong_" + bblist[0];
+				var s=document.getElementById(name);//判断这个id的div是否存在
+				if(s){
+					document.getElementById(name).innerHTML = "<img src=" + url + "/image/cuo2.gif class=juzhong width=16  height=16 >";
+				}
+			}
+		}
+
+
+
+		//标记
+		var aaalist = type_str[2].split(";");
+		for (i = 0;i < aaalist.length ;i ++ )
+		{
+			if(aaalist[i] != "")
+			{	
+				var bbblist = aaalist[i].split(",");
+				var name = "biaoji_" + bbblist[0];
+				var s=document.getElementById(name);//判断这个id的div是否存在
+				if(s){
+					document.getElementById(name).innerHTML = "<img src=" + url + "/image/hongqi.gif class=juzhong width=16  height=16 >";
+				}
+			}
+		}
+
+
+	});
+
+	
+
+	
+
+}
+
+
+
+
+function show_tihao_user_old(paper_id,tixing,url){
+
+//	alert(document.getElementById("tihao_5").innerHTML);
+//	alert();
+
+	//显示做错的次数
+	var web_url = url + "/tk_paper_tihao_show.jsp?paper_id=" + paper_id + "&tixing=" + tixing + "&type=wrong"; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+		data = data.replace(/[ ]/g,"");//去空格
+		data = data.replace(/[\r\n]/g,"");//去回车
+		var aList = data.split(";");
+		for (i = 0;i < aList.length ;i ++ )
+		{
+			if(aList[i] != "")
+			{	
+				var blist = aList[i].split(",");
+				var name = "wrong_" + blist[0];
+				document.getElementById(name).innerHTML = "<span class=red-text>" + blist[1] + "</span>";
+			}
+		}
+	});
+
+	//显示做每个题的次数
+	web_url = url + "/tk_paper_tihao_show.jsp?paper_id=" + paper_id + "&tixing=" + tixing + "&type=done"; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+		data = data.replace(/[ ]/g,"");//去空格
+		data = data.replace(/[\r\n]/g,"");//去回车
+		var aList = data.split(";");
+		for (i = 0;i < aList.length ;i ++ )
+		{
+			if(aList[i] != "")
+			{	
+				var blist = aList[i].split(",");
+				var name = "done_" + blist[0];
+				document.getElementById(name).innerHTML = "<span class=hui>" + blist[1] + "</span>";
+
+				var name_b = "tihao_" + blist[0];
+				document.getElementById(name_b).style.background = "#e4e4e4";
+			}
+		}
+	});
+
+	//显示有标记的小红旗
+	web_url = url + "/tk_paper_tihao_show.jsp?paper_id=" + paper_id + "&tixing=" + tixing + "&type=biaoji"; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+		data = data.replace(/[ ]/g,"");//去空格
+		data = data.replace(/[\r\n]/g,"");//去回车
+		var aList = data.split(";");
+		for (i = 0;i < aList.length ;i ++ )
+		{
+			if(aList[i] != "")
+			{	
+				var blist = aList[i].split(",");
+				var name = "biaoji_" + blist[0];
+				document.getElementById(name).innerHTML = "<img src=" + url + "/image/hongqi.gif class=juzhong width=16  height=16 >";
+			}
+		}
+	});
+
+
+
+
+//	document.getElementById("tihao_5").style.background = "#f1f1f1";
+
+}
+
+
+
+
+function show_zice_jiexi(product_id,url,name,zice_paper_id){
+
+
+
+//	alert();
+	//取出解析进行显示
+	var web_url = url + "/tk_jiexi_zice.jsp?product_id=" + product_id + "&zice_paper_id=" + zice_paper_id + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+
+		document.getElementById(name).innerHTML = data;
+		document.getElementById(name).style.display='block';
+//		alert('hg');
+
+	});
+}
+
+
+
+function addinfotousertk(tixing,product_id,paper_id,tihao,url){
+
+	var answer = "";//用户选择的答案
+	if(tixing == 'xuanze'){//是选择题，隐藏选项按钮
+		
+		if(document.getElementById("answer_option_user_a").checked == false && document.getElementById("answer_option_user_b").checked == false && document.getElementById("answer_option_user_c").checked == false && document.getElementById("answer_option_user_d").checked == false){
+			//当用户没进行过任何选择的时候，提示并跳出这个函数
+			alert("您还没有进行选择");
+			return(false);
+		}else{
+			//当用户进行过选择的时候，隐藏其他选项
+			if(document.getElementById("answer_option_user_a").checked == false){
+				document.getElementById("answer_option_user_a").style.display = "none";		
+			}else{
+				answer = "A";			
+			}
+			if(document.getElementById("answer_option_user_b").checked == false){
+				document.getElementById("answer_option_user_b").style.display = "none";		
+			}else{
+				answer = "B";			
+			}
+			if(document.getElementById("answer_option_user_c").checked == false){
+				document.getElementById("answer_option_user_c").style.display = "none";		
+			}else{
+				answer = "C";			
+			}
+			if(document.getElementById("answer_option_user_d").checked == false){
+				document.getElementById("answer_option_user_d").style.display = "none";		
+			}else{
+				answer = "D";			
+			}	
+			document.getElementById('tk_tjchakanjx').style.display = 'none';
+		}
+
+	}
+
+//	alert();
+	//取出答案和解析进行显示
+	var web_url = url + "/tk_jiexi.jsp?product_id=" + product_id + "&tixing=" + tixing + "&answer=" + answer + "&paper_id=" + paper_id + "&tihao=" + tihao + ""; 
+	$.get(web_url, {cache:false},function (data, textStatus){
+		document.getElementById("jiexi_area").style.display='block';
+		document.getElementById("jiexi_area").innerHTML = data;
+	});
+}
+
+
+
+
+function kt_tiku(text){
+	if (confirm("您确定要" + text + "科目的智能真题库吗?"))
+	{
+		return(true);
+	}else{
+		return(false);		
+	}	
+	
+}
+
+
+function kd_readarea2(area1,area2,url){
+
+	if(area1 == 0){//当一级选择，是全部地区（0）的时候，待提交的id为area1
+		document.all('kd_area_id').value = area1;
+		document.all('kd_showarea2').style.display='none';
+//		alert('a');
+	}else{//当一级选择，不是全部地区（0）的时候
+		document.all('kd_area_id').value = area1;//待提交的id为area1
+		document.all('kd_showarea2').style.display='block';
+//		alert('b');
+
+		var web_url = url + "/kd_base_area_2_xml.jsp?area1=" + area1 + "&area2=" + area2 + ""; 
+		$.get(web_url, {cache:false},function (data, textStatus){
+			document.getElementById('kd_showarea2').innerHTML = data;
+		});
+//		alert();
+	}
+//	alert(document.all('kd_area_id').value);
+}
+
+
+function kd_uparea2(area2){
+//	alert();
+//	var area_id_name = 'kd_area_id';
+	document.all('kd_area_id').value = area2;	
+//	alert(document.all('kd_area_id').value);
+}
+
+
+
+function readarea2(area1,area2,nn,url){
+//	alert();
+	var showarea2_name = 'showarea2_' + nn;
+	var area_id_name = 'area_id_' + nn;
+	if(area1 == 0){//当一级选择，是全部地区（0）的时候，待提交的id为area1
+		document.all(area_id_name).value = area1;
+		document.all(showarea2_name).style.display='none';
+	}else{//当一级选择，不是全部地区（0）的时候
+		document.all(area_id_name).value = area1;//待提交的id为area1
+		document.all(showarea2_name).style.display='block';
+
+		var web_url = url + "/base_area_2_xml.jsp?area1=" + area1 + "&area2=" + area2 + "&nn=" + nn + ""; 
+		$.get(web_url, {cache:false},function (data, textStatus){
+			document.getElementById(showarea2_name).innerHTML = data;
+		});
+//		alert();
+	}
+//	alert(document.all(area_id_name).value);
+}
+
+
+function uparea2(area2,nn){
+	var area_id_name = 'area_id_' + nn;
+	document.all(area_id_name).value = area2;	
+//	alert(document.all(area_id_name).value);
+}
+
+
+function chkShenqing(nn){
+	var area_id_name = 'area_id_' + nn;
+	var area_id = document.all(area_id_name).value;
+
+	var address_name = 'address_' + nn;
+	var address = document.all(address_name).value;
+
+	var name_name = 'name_' + nn;
+	var name = document.all(name_name).value;
+
+	var tel_name = 'tel_' + nn;
+	var tel = document.all(tel_name).value;
+
+	var remark_name = 'remark_' + nn;
+	var remark = document.all(remark_name).value;
+	
+	var id_name = 'id_' + nn;
+	var id = document.all(id_name).value;
+
+	var product_id_name = 'product_id_' + nn;
+	var product_id = document.all(product_id_name).value;
+
+	var kemu_id_name = 'kemu_id_' + nn;
+	var kemu_id = document.all(kemu_id_name).value;
+
+
+	var form_name = 'form_' + nn;
+//	alert(document.all(area_id_name).value);
+	if (area_id == 0)
+	{
+		//area_id = 0 没有选择地区
+		alert('请填写所属地区');
+	//	return(false);
+	}else if (address == '')
+	{
+		alert('请填写详细地址');
+	}else if (name == '')
+	{
+		alert('请填写收货人姓名');
+	}else if (tel == '')
+	{
+		alert('请填写收货人电话');
+	}else
+	{
+	//	alert();
+		if (confirm("确认提交您的申领吗？"))
+		{
+			window.location="dealwithcenter.jsp?action=addshenling&area_id=" + area_id + "&address=" + address + "&name=" + name + "&tel=" + tel + "&remark=" + remark + "&id=" + id + "&product_id=" + product_id + "&kemu_id=" + kemu_id + "";
+		}
+	//	alert('kk');
+	//	return(true);
+	}
+
+
+}
+
+
+
+
+function chkQrsh(nn){
+
+
+	var form_name = 'form_' + nn;
+//	alert(document.all(area_id_name).value);
+
+	if (confirm("确认提交？"))
+	{
+		window.location="dealwithcenter.jsp?action=qrshshenling&id=" + nn + "";
+	}
+
+
+}
