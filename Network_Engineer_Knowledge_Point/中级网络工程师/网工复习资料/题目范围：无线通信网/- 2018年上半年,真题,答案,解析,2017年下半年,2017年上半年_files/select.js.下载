@@ -1,0 +1,91 @@
+$(document).ready(function(){
+	$(".select_box input").click(function(){
+		var thisinput=$(this);
+		var thisul=$(this).parent().find("ul");
+		if(thisul.css("display")=="none"){
+			if(thisul.height()>200){thisul.css({height:"200"+"px","overflow-y":"scroll" })};
+			thisul.fadeIn("100");
+			thisul.hover(function(){},function(){thisul.fadeOut("100");})
+			thisul.find("li").click(function(){thisinput.val($(this).text());thisul.fadeOut("100");}).hover(function(){$(this).addClass("hover");},function(){$(this).removeClass("hover");});
+			}
+		else{
+			thisul.fadeOut("fast");
+			}
+	})
+	$("#submit").click(function(){
+		var endinfo="";
+		$(".select_box input:text").each(function(i){
+			endinfo=endinfo+(i+1)+":"+$(this).val()+";\n";							 
+		})							
+		alert(endinfo);						
+	})
+
+
+
+
+	$(".select_box1 input").click(function(){
+		var thisinput=$(this);
+		var thisul=$(this).parent().find("ul");
+		if(thisul.css("display")=="none"){
+			if(thisul.height()>200){thisul.css({height:"200"+"px","overflow-y":"scroll" })};
+			thisul.fadeIn("100");
+			thisul.hover(function(){},function(){thisul.fadeOut("100");})
+			thisul.find("li").click(function(){thisinput.val($(this).text());thisul.fadeOut("100");}).hover(function(){$(this).addClass("hover");},function(){$(this).removeClass("hover");});
+			}
+		else{
+			thisul.fadeOut("fast");
+			}
+	})
+	$("#submit").click(function(){
+		var endinfo="";
+		$(".select_box1 input:text").each(function(i){
+			endinfo=endinfo+(i+1)+":"+$(this).val()+";\n";							 
+		})							
+		alert(endinfo);						
+	})
+
+
+	$(".select_box2 input").click(function(){
+		var thisinput=$(this);
+		var thisul=$(this).parent().find("ul");
+		if(thisul.css("display")=="none"){
+			if(thisul.height()>200){thisul.css({height:"100"+"px","overflow-y":"scroll" })};
+			thisul.fadeIn("100");
+			thisul.hover(function(){},function(){thisul.fadeOut("100");})
+			thisul.find("li").click(function(){thisinput.val($(this).text());thisul.fadeOut("100");}).hover(function(){$(this).addClass("hover");},function(){$(this).removeClass("hover");});
+			}
+		else{
+			thisul.fadeOut("fast");
+			}
+	})
+	$("#submit").click(function(){
+		var endinfo="";
+		$(".select_box2 input:text").each(function(i){
+			endinfo=endinfo+(i+1)+":"+$(this).val()+";\n";							 
+		})							
+		alert(endinfo);						
+	})
+
+
+
+	$(".select_box3 input").click(function(){
+		var thisinput=$(this);
+		var thisul=$(this).parent().find("ul");
+		if(thisul.css("display")=="none"){
+			if(thisul.height()>200){thisul.css({height:"200"+"px","overflow-y":"scroll" })};
+			thisul.fadeIn("100");
+			thisul.hover(function(){},function(){thisul.fadeOut("100");})
+			thisul.find("li").click(function(){thisinput.val($(this).text());thisul.fadeOut("100");}).hover(function(){$(this).addClass("hover");},function(){$(this).removeClass("hover");});
+			}
+		else{
+			thisul.fadeOut("fast");
+			}
+	})
+	$("#submit").click(function(){
+		var endinfo="";
+		$(".select_box3 input:text").each(function(i){
+			endinfo=endinfo+(i+1)+":"+$(this).val()+";\n";							 
+		})							
+		alert(endinfo);						
+	})
+});
