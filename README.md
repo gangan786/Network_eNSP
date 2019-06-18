@@ -31,13 +31,23 @@
 
 
 
-+ 课程设计
++ 网络互连课程设计
 
   详细的设计说明可查看具体文档
 
   ![](https://github.com/gangan786/Network_eNSP/blob/master/3116001779%E9%99%88%E6%B7%A6_%E7%BD%91%E7%BB%9C%E4%BA%92%E8%BF%9E%E6%8A%80%E6%9C%AF_%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1/image/%E6%8B%93%E6%89%91%E5%9B%BE.png?raw=true)
 
   
+
++ 网络安全大作业：IPSec
+
+  IPSec链路安全加密，
+
+  VPN访问分隔两地的公司部门
+
+  NAT穿越
+
+  ![](https://github.com/gangan786/Network_eNSP/blob/master/IPSec/Image/%E5%85%A8%E5%B1%80%E6%8B%93%E6%89%91%E5%9B%BE.png?raw=true)
 
 该实验基于华为网络模拟器（eNSP），每个实验可直接导入该模拟器中运行并且可自行修改
 
